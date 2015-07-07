@@ -1,122 +1,176 @@
-# Harmony
+# Pixyll
 
-Harmony is a responsive jekyll theme. 
+[pixyll.com](http://www.pixyll.com)
 
-- Build for jekyll 2.x
-- Support Google analytics and RSS feeds
-- Sass based styles
-- Browser support: IE 8+, Chrome, Safari and Firefox 
-- Fluidly responsive 
+![Pixyll screenshot](https://cloud.githubusercontent.com/assets/1424573/3847467/134aa236-1e66-11e4-8421-4e8c122118dc.png)
 
-## Contents
+Pixyll is a simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff. It's mobile _first_, fluidly responsive, and delightfully lightweight.
 
-- [Harmony](#harmony)
-- [About Jekyll](#about-jekyll)
-- [How to install/run](#how-to-installrun)
-- [Options/Usage](#optionsusage)
-  - [Header navigation links](#header-navigation-links)
-  - [Footer links](#footer-links)
-  - [Copyrights/Disclaimer statements](#copyrightsdisclaimer-statements)
-- [Screenshots](#screenshots)
-- [Feedback/Bugs/Suggestions](#feedbackbugssuggestions)
-- [Version history](#version-history)
-- [License](#license)
+It's pretty minimal, but leverages large type and drastic contrast to make a statement, on all devices.
 
-## About jekyll 
+This Jekyll theme was crafted with <3 by [John Otander](http://johnotander.com)
+([@4lpine](https://twitter.com/4lpine)).
 
-[Jekyll](http://jekyllrb.com/) is a static site generator, an open-source tool for creating simple yet powerful websites of all shapes and sizes.
+中文版 <https://github.com/ee0703/pixyll-zh-cn>.
 
-## How to install/run
+## Getting Started
 
-1. [Fork](https://github.com/web-create/harmony/fork) this repository.
-2. Clone it: git clone https://github.com/YOUR-USERNAME/harmony.
-3. If you completely new to jekyll, please read more about [Jekyll](http://jekyllrb.com/) and [Github pages](https://help.github.com/articles/using-jekyll-with-pages).
-4. Change your directory into cloned repository. 
-5. Run `bundle install`
-6. Edit the _config.yml on root directory. Change `url` property to to 
-`http://127.0.0.1:4000` since you are going to run on localhost.
-7. Run the jekyll server by having: `jekyll serve --baseurl ''` or `rake preview`   
+If you're completely new to Jekyll, I recommend checking out the documentation at <http://jekyllrb.com> or there's a tutorial by [Smashing Magazine](http://www.smashingmagazine.com/2014/08/01/build-blog-jekyll-github-pages/).
 
-Try to locate your browser at [http://localhost:4000](http://localhost:4000).
+### Installing Jekyll
 
-Note: If you are a windows user please refer this nice website - http://jekyll-windows.juthilo.com/ by Julian Thilo to configure ruby + jekyll on windows.
+If you don't have Jekyll already installed, you will need to go ahead and do that.
 
-## Options/Usage
-
-Harmony theme has some customizable options. All the configuration details are 
-configured in `_config.yml` file under root of the harmony directory. 
-
-Feel free to change your `name`, `descriptionn`, `meta_description`, `author details`,
-`social media names` and `google analytics id` accordingly. 
-
-``` yml
-# Harmony theme configuration. Please change accordingly.
-harmony:
-  name: Harmony
-  # Little description about your site
-  description: Harmony is free responsive jekyll theme.
-  meta_description: Harmony is free responsive jekyll theme. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-  basetheme: theme-base-01 # pre defined the{{ site.url | prepend: site.baseurl }}mes are darken, blue-water, reddish.
-  author: # Author details
-    name: Gayan Virajith
-    email: gayanvirajith@gmail.com
-    url: http://gayanvirajith.github.io
-
-  # Google Analytics key, leave blank to ignore
-  google_analytics_key: UA-xxxx-x
-
-  # Profile links, leave blank to ignore
-  social: 
-    github: gayanvirajith
-    twitter: gayanvirajith
-    facebook: gayanvirajith
-    gplus: +GayanVirajith
-    dribble: gayan
-    pinterest: 
-  # Toggle disclaimer in footer
-  show_disclaimer: true
+```
+$ gem install jekyll
 ```
 
-### Includes 
+#### Verify your Jekyll version
 
-All the partial includes are under `_includes` directory.
+It's important to also check your version of Jekyll since this project uses Native Sass which
+is [only supported by 2.0+](http://jekyllrb.com/news/2014/05/06/jekyll-turns-2-0-0/).
 
-#### Header navigation links
+```
+$ jekyll -v
+# This should be jekyll 2.0.0 or later
+```
 
-Feel free to add/edit links for your header in the file `header-links.html`.
+### Fork, then clone
 
-#### Footer links
+Fork the repo, and then clone it so you've got the code locally.
 
-Customize your footer links by editing `_includes/footer-links.html`
+### Modify the _config.yml
 
-#### Copyrights/Disclaimer statements
+The `_config.yml` located in the root of the Pixyll directory contains all of the configuration details
+for the Jekyll site. The defaults are:
 
-All the copyrights notes are under `_includes/footer.html`. Also note that you 
-can toggle on/off copyright note from front-end by setting up `show_disclaimer` 
-property in `_config.yml`. 
+```yml
+# Site settings
+title: Pixyll
+email: your_email@example.com
+author: John Otander
+description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
+baseurl: ""
+url: "http://pixyll.com"
 
-### Screenshots
-![Home page screenshot](https://raw.githubusercontent.com/web-create/harmony/master/assets/css/images/harmony-web.jpg "Desktop screen")
+# Build settings
+markdown: kramdown
+permalink: pretty
+paginate: 3
+```
 
-![Post page screenshot](https://raw.githubusercontent.com/web-create/harmony/master/assets/css/images/harmony-web-2.jpg "Post page screenshot")
+### Jekyll Serve
 
-![Blog archive page screenshot](https://raw.githubusercontent.com/web-create/harmony/master/assets/css/images/harmony-web-3.jpg "Blog archive page screenshot")
+Then, start the Jekyll Server. I always like to give the `--watch` option so it updates the generated HTML when I make changes.
 
-#### Feedback/Bugs/Suggestions 
+```
+$ jekyll serve --watch
+```
 
-Please submit as [Github issuee](https://github.com/web-create/harmony/issues/new),
-I am happy to response back.
+Now you can navigate to `localhost:4000` in your browser to see the site.
 
-Version history
----------------
+### Using Github Pages
 
-| Version no. | Description  | Date |
-| --- | --- | --- |
-| 1.0 | Initial release | 9th September 2014 |
-| 1.0.1 | v1.0.1 with minor bug fix | 9th September 2014 |
+You can host your Jekyll site for free with Github Pages. [Click here](https://pages.github.com/) for more information.
 
+#### A configuration tweak if you're using a gh-pages sub-folder
 
-## License
+In addition to your github-username.github.io repo that maps to the root url, you can serve up sites by using a gh-pages branch for other repos so they're available at github-username.github.io/repo-name.
 
-Free / Open sourced under the 
-[MIT](https://github.com/web-create/harmony/blob/master/LICENSE.md).
+This will require you to modify the `_config.yml` like so:
+
+```yml
+# Site settings
+title: Repo Name
+email: your_email@example.com
+author: John Otander
+description: "Repo description"
+baseurl: "/repo-name"
+url: "http://github-username.github.io"
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+paginate: 3
+```
+
+This will ensure that the the correct relative path is constructed for your assets and posts. Also, in order to run the project locally, you will need to specify the blank string for the baseurl: `$ jekyll serve --baseurl ''`.
+
+##### If you don't want the header to link back to the root url
+
+You will also need to tweak the header include `/{{ site.baseurl }}`:
+
+```html
+<header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="{{ site.url }}/{{ site.baseurl }}">{{ site.title }}</a>
+      <nav class="site-nav right">
+        {% include navigation.html %}
+      </nav>
+    </div>
+  </div>
+</header>
+```
+
+A relevant Jekyll Github Issue: <https://github.com/jekyll/jekyll/issues/332>
+
+### Contact Form
+
+If you'd like to keep the contact form, which uses <http://formspree.io/>, you will need to update the email address.
+
+Currently, the `contact.md` has the following:
+
+```html
+<form action="https://formspree.io/johnotander@icloud.com" method="POST" class="form-stacked form-light">
+```
+
+Where it says `johnotander@icloud.com`, you will need to change that to the email that you wish to have the form data sent to. It will require you to fill the form out when you push it live for the first time so that you can confirm your email.
+
+### Page Animation
+
+If you would like to add a [fade-in-down effect](http://daneden.github.io/animate.css/), you can add `animated: true` to your `_config.yml`.
+
+### Put in a Pixyll Plug
+
+If you want to give credit to the Pixyll theme with a link to <http://pixyll.com> or my personal website <http://johnotander.com> somewhere, that'd be awesome. No worries if you don't.
+
+### Enjoy
+
+I hope you enjoy using Pixyll. If you encounter any issues, please feel free to let me know by creating an [issue](https://github.com/johnotander/pixyll/issues). I'd love to help.
+
+## Upgrading Pixyll
+
+Pixyll is always being improved by its users, so sometimes one may need to upgrade.
+
+#### Ensure there's an upstream remote
+
+If `git remote -v` doesn't have an upstream listed, you can do the following to add it:
+
+```
+git remote add upstream https://github.com/johnotander/pixyll.git
+```
+
+#### Pull in the latest changes
+
+```
+git pull upstream master
+```
+
+There may be merge conflicts, so be sure to fix the files that git lists if they occur. That's it!
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+## Thanks to the following:
+
+* [BASSCSS](http://basscss.com)
+* [Jekyll](http://jekyllrb.com)
+* [Refills](http://refills.bourbon.io/)
+* [Solarized](http://ethanschoonover.com/solarized)
+* [Animate.css](http://daneden.github.io/animate.css/)
