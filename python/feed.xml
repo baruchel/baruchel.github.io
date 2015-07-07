@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Your awesome title</title>
-    <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+    <title>Functional programming in Python</title>
+    <description>Posts concerning functional programming in Python.
 </description>
-    <link>http://baruchel.github.io/python//</link>
-    <atom:link href="http://baruchel.github.io/python//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 07 Jul 2015 17:22:05 +0200</pubDate>
-    <lastBuildDate>Tue, 07 Jul 2015 17:22:05 +0200</lastBuildDate>
+    <link>http://baruchel.github.io/python/</link>
+    <atom:link href="http://baruchel.github.io/python/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 07 Jul 2015 17:30:04 +0200</pubDate>
+    <lastBuildDate>Tue, 07 Jul 2015 17:30:04 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>Tail Recursion In Python</title>
-        <description>&lt;p&gt;/*
-Title: Optimizing tail-recursion in Python
-Description: Optimizing tail-recursion in Python
-Author: Thomas Baruchel
-Date: 2013/12/03
-*/&lt;/p&gt;
-
-&lt;h1 id=&quot;optimizing-tail-recursion-in-python&quot;&gt;Optimizing tail-recursion in Python&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;optimizing-tail-recursion-in-python&quot;&gt;Optimizing tail-recursion in Python&lt;/h1&gt;
 &lt;p&gt;It has often been claimed that tail-recursion doesn’t suit the pythonic way of coding
 and that one shouldn’t care about how to embed it in a loop. I don’t want to argue with
 this point of view; sometimes however I like trying or implementing new ideas
@@ -45,8 +38,7 @@ can protect the recursive call to be actually evaluated. Evaluation can thus be 
 
 &lt;p&gt;Here is the famous expression for the Y combinator:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;lambda f: (lambda x: x(x))(lambda y: f(lambda *args: y(y)(*args)))
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;With a very slight change, I could get:&lt;/p&gt;
 
@@ -159,8 +151,8 @@ something (normal behaviour) but we can’t do it because of a recursive call oc
 &lt;p&gt;The module can be downloaded from this website: &lt;a href=&quot;/content/download/recursion.py&quot;&gt;recursion.py&lt;/a&gt;. It is released under the terms of the M.I.T. open source license.&lt;/p&gt;
 </description>
         <pubDate>Tue, 03 Dec 2013 00:00:00 +0100</pubDate>
-        <link>http://baruchel.github.io/python//2013/12/03/tail-recursion-in-python.html</link>
-        <guid isPermaLink="true">http://baruchel.github.io/python//2013/12/03/tail-recursion-in-python.html</guid>
+        <link>http://baruchel.github.io/python/2013/12/03/tail-recursion-in-python.html</link>
+        <guid isPermaLink="true">http://baruchel.github.io/python/2013/12/03/tail-recursion-in-python.html</guid>
         
         
       </item>
