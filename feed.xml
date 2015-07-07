@@ -5,9 +5,55 @@
     <description>topics in functional programming</description>
     <link>http://baruchel.github.io/</link>
     <atom:link href="http://baruchel.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 07 Jul 2015 20:16:46 +0200</pubDate>
-    <lastBuildDate>Tue, 07 Jul 2015 20:16:46 +0200</lastBuildDate>
+    <pubDate>Tue, 07 Jul 2015 20:34:14 +0200</pubDate>
+    <lastBuildDate>Tue, 07 Jul 2015 20:34:14 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Infinite power in Python</title>
+        <description>&lt;h1 id=&quot;infinite-power-in-python&quot;&gt;Infinite power in Python&lt;/h1&gt;
+&lt;p&gt;A nice feature in the J programming language is the infinite power operator, which gives the ability to raise a function to the infinite power. The idea is to repeatedly apply a function to its previous result until some convergence is reached.&lt;/p&gt;
+
+&lt;p&gt;Implementing such a feature in Python is rather easy:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;__infinity__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
+    
+      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__rpow__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+              &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;
+    
+    &lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__infinity__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__rxor__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__rpow__&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This piece of code creates the &lt;code&gt;infinity&lt;/code&gt; variable which can be used for raising any function to the infinite power:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; oo=infinity
+&amp;gt;&amp;gt;&amp;gt; from math import sqrt, cos
+&amp;gt;&amp;gt;&amp;gt; (cos**oo)(.5)
+0.7390851332151607
+&amp;gt;&amp;gt;&amp;gt; (sqrt^oo)(.5)
+0.9999999999999999
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Of course, the operator for “power” is &lt;code&gt;**&lt;/code&gt; in Python, but it isn’t much more coding to also allow the variable to be used with &lt;code&gt;^&lt;/code&gt; (while it could be held as a very bad idea from a pythonic point of view).&lt;/p&gt;
+
+&lt;p&gt;The previous example shows how to rename the variable for convenience purposes (rename it to &lt;code&gt;oo&lt;/code&gt;, &lt;code&gt;Inf&lt;/code&gt;, or any other name).&lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Jul 2015 00:00:00 +0200</pubDate>
+        <link>http://baruchel.github.io/python/2015/07/07/infinite-power-in-python/</link>
+        <guid isPermaLink="true">http://baruchel.github.io/python/2015/07/07/infinite-power-in-python/</guid>
+        
+        
+        <category>python</category>
+        
+      </item>
     
       <item>
         <title>Optimizing tail-recursion in Python</title>
