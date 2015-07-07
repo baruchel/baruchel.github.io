@@ -55,24 +55,23 @@
 	    </span>
 		</p>		
 		<div class="post">
-			<h1 id="infinite-power-in-python">Infinite power in Python</h1>
-<p>A nice feature in the J programming language is the infinite power operator, which gives the ability to raise a function to the infinite power. The idea is to repeatedly apply a function to its previous result until some convergence is reached.</p>
+			<p>A nice feature in the J programming language is the infinite power operator, which gives the ability to raise a function to the infinite power. The idea is to repeatedly apply a function to its previous result until some convergence is reached or until some system is stabilized. Such a feature allows to “hide” many <code>while</code> loops.</p>
 
 <p>Implementing such a feature in Python is rather easy:</p>
 
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">__infinity__</span><span class="p">():</span>
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">pass</span>
-        <span class="k">def</span> <span class="nf">__rpow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-            <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-                <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-                    <span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">a</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="n">b</span>
-                    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
-            <span class="k">return</span> <span class="n">func</span>
-    <span class="n">infinity</span> <span class="o">=</span> <span class="n">__infinity__</span><span class="p">()</span>
-    <span class="n">infinity</span><span class="o">.</span><span class="n">__rxor__</span> <span class="o">=</span> <span class="n">infinity</span><span class="o">.</span><span class="n">__rpow__</span></code></pre></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">__rpow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">a</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">b</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="k">return</span> <span class="n">func</span>
+<span class="n">infinity</span> <span class="o">=</span> <span class="n">__infinity__</span><span class="p">()</span>
+<span class="n">infinity</span><span class="o">.</span><span class="n">__rxor__</span> <span class="o">=</span> <span class="n">infinity</span><span class="o">.</span><span class="n">__rpow__</span></code></pre></div>
 
 <p>This piece of code creates the <code>infinity</code> variable which can be used for raising any function to the infinite power:</p>
 
