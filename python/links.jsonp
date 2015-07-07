@@ -1,8 +1,0 @@
-callback([
-
-  {
-    "text": "Tail Recursion In Python",
-    "href": "http://baruchel.github.io/2013/12/03/tail-recursion-in-python.html"
-  } 
-
-])
