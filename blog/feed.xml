@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description>topics in functional programming</description>
-    <link>http://baruchel.github.io/computing/</link>
-    <atom:link href="http://baruchel.github.io/computing/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 08 Jul 2015 09:55:11 +0200</pubDate>
-    <lastBuildDate>Wed, 08 Jul 2015 09:55:11 +0200</lastBuildDate>
+    <link>http://baruchel.github.io/blog/</link>
+    <atom:link href="http://baruchel.github.io/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Wed, 08 Jul 2015 12:56:58 +0200</pubDate>
+    <lastBuildDate>Wed, 08 Jul 2015 12:56:58 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -15,7 +15,7 @@
 
 &lt;p&gt;Implementing such a feature in Python is rather easy:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;__infinity__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;__infinitepower__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
             &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__rpow__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
@@ -26,12 +26,12 @@
                         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
                     &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
             &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__infinity__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__rxor__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;infinity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__rpow__&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;span class=&quot;n&quot;&gt;infinitepower&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__infinitepower__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;infinitepower&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__rxor__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;infinitepower&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__rpow__&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;This piece of code creates the &lt;code&gt;infinity&lt;/code&gt; variable which can be used for raising any function to the infinite power:&lt;/p&gt;
+&lt;p&gt;This piece of code creates the &lt;code&gt;infinitepower&lt;/code&gt; variable which can be used for raising any function to the infinite power:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; oo=infinity
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; oo=infinitepower
 &amp;gt;&amp;gt;&amp;gt; from math import sqrt, cos
 &amp;gt;&amp;gt;&amp;gt; (cos**oo)(.5)
 0.7390851332151607
@@ -44,8 +44,8 @@
 &lt;p&gt;The previous example shows how to rename the variable for convenience purposes (rename it to &lt;code&gt;oo&lt;/code&gt;, &lt;code&gt;Inf&lt;/code&gt;, or any other name).&lt;/p&gt;
 </description>
         <pubDate>Tue, 07 Jul 2015 00:00:00 +0200</pubDate>
-        <link>http://baruchel.github.io/computing/python/2015/07/07/infinite-power-in-python/</link>
-        <guid isPermaLink="true">http://baruchel.github.io/computing/python/2015/07/07/infinite-power-in-python/</guid>
+        <link>http://baruchel.github.io/blog/python/2015/07/07/infinite-power-in-python/</link>
+        <guid isPermaLink="true">http://baruchel.github.io/blog/python/2015/07/07/infinite-power-in-python/</guid>
         
         
         <category>python</category>
@@ -185,8 +185,8 @@ I find funny the idea of using &lt;code&gt;try&lt;/code&gt; with a single line b
 something (normal behaviour) but we can’t do it because of a recursive call occuring (exception).&lt;/p&gt;
 </description>
         <pubDate>Tue, 03 Dec 2013 00:00:00 +0100</pubDate>
-        <link>http://baruchel.github.io/computing/python/2013/12/03/tail-recursion-in-python/</link>
-        <guid isPermaLink="true">http://baruchel.github.io/computing/python/2013/12/03/tail-recursion-in-python/</guid>
+        <link>http://baruchel.github.io/blog/python/2013/12/03/tail-recursion-in-python/</link>
+        <guid isPermaLink="true">http://baruchel.github.io/blog/python/2013/12/03/tail-recursion-in-python/</guid>
         
         
         <category>python</category>
