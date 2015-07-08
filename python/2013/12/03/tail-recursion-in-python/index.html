@@ -91,7 +91,7 @@ very same call, but since it returns it, the evaluation can be done later from o
 
 <p>My code is:</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">bet</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">))(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span>
               <span class="n">f</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">))))(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -105,17 +105,17 @@ very same call, but since it returns it, the evaluation can be done later from o
 versions of factorial and Fibonacci:</p>
 
 <pre><code>&gt;&gt;&gt; from recursion import *
-&gt;&gt;&gt; fac = bet( lambda f: lambda n, a: a if not n else f(n-1,a*n) )
+&gt;&gt;&gt; fac = B( lambda f: lambda n, a: a if not n else f(n-1,a*n) )
 &gt;&gt;&gt; fac(5,1)
 120
-&gt;&gt;&gt; fibo = bet( lambda f: lambda n,p,q: p if not n else f(n-1,q,p+q) )
+&gt;&gt;&gt; fibo = B( lambda f: lambda n,p,q: p if not n else f(n-1,q,p+q) )
 &gt;&gt;&gt; fibo(10,0,1)
 55
 </code></pre>
 
 <p>Obviously recursion depth isn’t an issue any longer:</p>
 
-<pre><code>&gt;&gt;&gt; bet( lambda f: lambda n: 42 if not n else f(n-1) )(50000)
+<pre><code>&gt;&gt;&gt; B( lambda f: lambda n: 42 if not n else f(n-1) )(50000)
 42
 </code></pre>
 
@@ -132,7 +132,7 @@ a little more in order to find some workaround for this issue (see next section)
 to be quite good; tail-recursive functions are even evaluated much quicker than with
 the following code using simpler expressions:</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">bet1</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">B0</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
             <span class="n">out</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">x</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
             <span class="k">while</span> <span class="nb">callable</span><span class="p">(</span><span class="n">out</span><span class="p">):</span>
@@ -162,7 +162,7 @@ happens here…</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
     <span class="k">def</span> <span class="nf">_recursiveCallback</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
       <span class="k">raise</span> <span class="n">_RecursiveCall</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">bet0</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">B2</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
             <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
               <span class="k">try</span><span class="p">:</span>
@@ -174,7 +174,7 @@ happens here…</p>
 <p>Now all functions can be used. In the following example, <code>f(n)</code> is evaluated to the
 identity function for any positive value of n:</p>
 
-<pre><code>&gt;&gt;&gt; f = bet0( lambda f: lambda n: (lambda x: x) if not n else f(n-1) )
+<pre><code>&gt;&gt;&gt; f = B2( lambda f: lambda n: (lambda x: x) if not n else f(n-1) )
 &gt;&gt;&gt; f(5)(42)
 42
 </code></pre>
