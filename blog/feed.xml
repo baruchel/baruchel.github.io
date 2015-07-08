@@ -5,13 +5,15 @@
     <description>topics in functional programming</description>
     <link>http://baruchel.github.io/blog/</link>
     <atom:link href="http://baruchel.github.io/blog/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 08 Jul 2015 13:09:44 +0200</pubDate>
-    <lastBuildDate>Wed, 08 Jul 2015 13:09:44 +0200</lastBuildDate>
+    <pubDate>Wed, 08 Jul 2015 13:55:40 +0200</pubDate>
+    <lastBuildDate>Wed, 08 Jul 2015 13:55:40 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>Infinite power in Python</title>
         <description>&lt;p&gt;A nice feature in the J programming language is the infinite power operator, which gives the ability to raise a function to the infinite power. The idea is to repeatedly apply a function to its previous result until some convergence is reached or until some system is stabilized. Such a feature allows to “hide” many &lt;code&gt;while&lt;/code&gt; loops.&lt;/p&gt;
+
+&lt;p&gt;Here is a link to the page of the &lt;em&gt;J for C programmers&lt;/em&gt; book explaining more about this way of coding: [http://www.jsoftware.com/help/jforc/loopless_code_iv_irregular_o.htm].&lt;/p&gt;
 
 &lt;p&gt;Implementing such a feature in Python is rather easy:&lt;/p&gt;
 
