@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>inca</title>
+    <script src="jquery-1.7.1.min.js"></script>
+    <script src="jquery.mousewheel-min.js"></script>
+    <script src="jquery.terminal-min.js"></script>
+    <style>
+      @font-face {
+        font-family: 'SourceCodePro';
+        src: url('SourceCodePro-Medium.eot');
+        src: url('SourceCodePro-Medium.eot?#iefix') format('embedded-opentype'),
+             url('SourceCodePro-Medium.otf.woff') format('woff'),
+             url('SourceCodePro-Medium.ttf.woff') format('truetype'),
+             url('SourceCodePro-Medium.svg') format('svg');
+      }
+      body {
+        background-color: #162020;
+        color: #bbb;
+        font-family: SourceCodePro, monospace;
+        width: 720px;
+        margin: 8px auto 0;
+      }
+      #logo {
+        font-size: 64px;
+        margin-bottom: 4px;
+      }
+      #about {
+        margin-bottom: 24px;
+      }
+      .terminal {
+        border: 1px solid #AAA;
+        border-radius: 5px;
+      }
+    </style>
+    <link href="jquery.terminal.css" rel="stylesheet"/>
+  </head>
+<body>
+
+<script type="text/javascript">
+  var myterm = false;
+  var Module = {
+    noInitialRun: false,
+    noExitRuntime: true,
+    preRun: [],
+    postRun: [],
+    print: (function() {
+      return function(text) {
+        myterm.echo(text,{
+          finalize: function(div) {
+            div.css("color", "white");
+          }
+        });
+      };
+    })()
+  };
+</script>
+<script type="text/javascript" src="inca.js"></script>
+<script type="text/javascript">
+  // wrapper for the process_wrapper C function
+  var process = Module.cwrap('process', null, ['string']);
+</script>
+
+<!-- terminal emulation -->
+<div id="logo">inca</div>
+<div id="about">written in C by luser-dr00g<br/>compiled to Javascript by Th.&nbsp;Baruchel</div>
+<div id="console"></div>
+
+<script>
+jQuery(document).ready(function($) {
+    var id = 1;
+    myterm = $('#console').terminal(function(command, term) {
+      process(command);
+    }, {
+        greetings: "",
+        name: "inca",
+        height: 640,
+        prompt: "   ",
+        onBlur: function() {
+            // prevent loosing focus
+            return false;
+        }
+    });
+});
+
+</script>
+</body>

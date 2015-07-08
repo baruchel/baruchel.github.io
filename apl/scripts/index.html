@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>GNU APL.js</title>
+    <style>
+      body {
+        font-family: arial;
+        margin: 0;
+        padding: none;
+        background-color: gray;
+        color: white;
+      }
+
+      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+      div.emscripten { text-align: center; }      
+      /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+      canvas.emscripten { border: 0px none; }
+
+      #logo {
+        display: inline-block;
+        margin: 8px;
+        font-size: 48px;
+        font-family: Courier, 'Courier New', monospace;
+      }
+
+      a {
+        text-decoration: none;
+        color: white;
+      }
+
+      .spinner {
+        height: 30px;
+        width: 30px;
+        margin: 0;
+        margin-top: 20px;
+        margin-left: 20px;
+        display: inline-block;
+        vertical-align: top;
+
+        -webkit-animation: rotation .8s linear infinite;
+        -moz-animation: rotation .8s linear infinite;
+        -o-animation: rotation .8s linear infinite;
+        animation: rotation 0.8s linear infinite;
+
+        border-left: 5px solid rgb(235, 235, 235);
+        border-right: 5px solid rgb(235, 235, 235);
+        border-bottom: 5px solid rgb(235, 235, 235);
+        border-top: 5px solid rgb(120, 120, 120);
+        
+        border-radius: 100%;
+        background-color: rgb(189, 215, 46);
+      }
+
+      @-webkit-keyframes rotation {
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+      }
+      @-moz-keyframes rotation {
+        from {-moz-transform: rotate(0deg);}
+        to {-moz-transform: rotate(360deg);}
+      }
+      @-o-keyframes rotation {
+        from {-o-transform: rotate(0deg);}
+        to {-o-transform: rotate(360deg);}
+      }
+      @keyframes rotation {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(360deg);}
+      }
+
+      #status {
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 30px;
+        margin-left: 20px;
+        font-weight: bold;
+      }
+
+      #progress {
+        height: 20px;
+        width: 30px;
+      }
+
+      #controls {
+        display: none;
+        float: right;
+        vertical-align: top;
+        margin-top: 30px;
+        margin-right: 20px;
+      }
+
+      #output {
+        width: 800px;
+        height: 480px;
+        margin: 0 auto;
+        display: block;
+        background-color: black;
+        color: white;
+        font-family: 'Lucida Console', Monaco, monospace;
+        outline: none;
+        resize: vertical;
+      }
+
+      #hintArea {
+        width: 800px;
+        height: 16px;
+        margin: 0 auto;
+        color: white;
+        font-size: small;
+        font-family: sans-serif;
+      }
+
+      #hint {
+        text-align: center;
+        position: relative;
+        top: -4px;
+      }
+      
+      #hint a {
+        color: #CCC;
+        text-decoration: none;
+      }
+
+      #hint a:hover {
+        color: #555;
+      }
+
+      #input {
+        width: 792px;
+        height: 232px;
+        margin: 0 auto 0;
+        padding: 4px;
+        display: block;
+        background-color: white;
+        color: black;
+        font-family: Courier, 'Courier New', 'Lucida Console', Monaco, monospace;
+        outline: medium none;
+        resize: vertical;
+      }
+
+      #main {
+        width: 944px;
+        margin: 0 auto;
+        display: block;
+      }
+
+      #keyboard {
+        height: 0px;
+        position: relative;
+        top: 2px;
+        left: -36px;
+        font-size: small;
+        font-family: Courier, 'Courier New', monospace;
+      }
+      #main a {
+        color: #CCC;
+      }
+      #main a:hover {
+        color: white;
+      }
+
+      #executeLink {
+        position: relative;
+        top: -36px;
+        text-decoration: none;
+        color: #BBB;
+        font-size: 32px;
+        font-family: Courier, 'Courier New', monospace;
+      }
+      #executeLink:hover {
+        color: white;
+      }
+
+      #about {
+        width: 800px;
+        margin: 0 auto;
+      }
+
+    </style>
+    <script type="text/javascript">
+
+        // Wait for the page to load first
+        window.onload = function() {
+
+          //Get a reference to the link on the page
+          // with an id of "mylink"
+          var a = document.getElementById("executeLink");
+          var b = document.getElementById("hintLink");
+          var c = document.getElementById("hint");
+          var d = document.getElementById("input");
+          var e = window.location;
+
+          //Set code to run when the link is clicked
+          // by assigning a function to "onclick"
+          a.onclick = function() {
+            if (s == '') {
+              c.style.display = 'none';
+            } else {
+              aplRun();
+              var s = encodeURIComponent(document.getElementById("input").value);
+              e.hash = 'code='.concat(s);
+              b.setAttribute('href',e);
+              c.style.display = 'block';
+            }
+            return false;
+          }
+
+          var code = decodeURIComponent(window.location.hash).substr(1);
+          if (code.substring(0,5)=='code=') {
+            code = code.substring(5);
+            d.value = code;
+            b.setAttribute('href',window.location.href);
+          }
+          if (code=='') {
+            c.style.display = 'none';
+          }
+
+          // set keyboard
+          function insertTextAtCursor(el, text) {
+              var val = el.value, endIndex, range, doc = el.ownerDocument;
+              if (typeof el.selectionStart == "number"
+                      && typeof el.selectionEnd == "number") {
+                  endIndex = el.selectionEnd;
+                  el.value = val.slice(0, endIndex) + text + val.slice(endIndex);
+                  el.selectionStart = el.selectionEnd = endIndex + text.length;
+              } else if (doc.selection != "undefined" && doc.selection.createRange) {
+                  el.focus();
+                  range = doc.selection.createRange();
+                  range.collapse(false);
+                  range.text = text;
+                  range.select();
+              }
+          }
+          var k = document.getElementById("keyboard").childNodes;
+          for( i = 0 , j = k.length; i < j ; i++ ){
+            if( k[i].tagName == "A" ){
+              k[i].onclick = function() {
+                insertTextAtCursor(d,this.textContent);
+                return false;
+              }
+            }
+          }
+        }
+    </script>
+  </head>
+  <body>
+    <div id="logo"><a id="logoLink" href="./"><span style="margin-right: 4px;font-size: 85%;">&#x2395;</span>GNUAPL.js</a></div>
+    <div class="spinner" id='spinner'></div>
+    <div class="emscripten" id="status">Downloading...</div>
+
+<span id='controls'>
+  <span><input type="checkbox" id="resize">Resize canvas</span>
+  <span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer &nbsp;&nbsp;&nbsp;</span>
+  <span><input type="button" value="Fullscreen" onclick="Module.requestFullScreen(document.getElementById('pointerLock').checked, 
+                                                                            document.getElementById('resize').checked)">
+  </span>
+</span>
+
+    <div class="emscripten">
+      <progress value="0" max="100" id="progress" hidden></progress>
+    </div>
+
+    
+    <textarea readonly id="output" rows="8"></textarea>
+    <div id="hintArea"><p id="hint">Use this <a id="hintLink" href="#">permalink</a> for referring to the previously evaluated code.</p></div>
+    <div id="main">
+      <div id="keyboard">
+        <a href="#">+</a>
+        <a href="#">-</a>
+        <a href="#">×</a>
+        <a href="#">÷</a>
+        <a href="#">*</a>
+        <a href="#">⍟</a>
+        <br/>
+        <a href="#">&lt;</a>
+        <a href="#">≤</a>
+        <a href="#">≥</a>
+        <a href="#">&gt;</a>
+        <a href="#">=</a>
+        <a href="#">≠</a>
+        <br/>
+        <a href="#">≡</a>
+        <a href="#">~</a>
+        <a href="#">^</a>
+        <a href="#">∨</a>
+        <a href="#">⍲</a>
+        <a href="#">⍱</a>
+        <br/>
+        <a href="#">⊢</a>
+        <a href="#">⊣</a>
+        <a href="#">⊥</a>
+        <a href="#">⊤</a>
+        <a href="#">⍎</a>
+        <a href="#">⍕</a>
+        <br/>
+        <a href="#">○</a>
+        <a href="#">⌽</a>
+        <a href="#">⊖</a>
+        <a href="#">⍉</a>
+        <a href="#">|</a>
+        <a href="#">!</a>
+        <br/>
+        <a href="#">⌊</a>
+        <a href="#">⌈</a>
+        <a href="#">↑</a>
+        <a href="#">↓</a>
+        <a href="#">⍋</a>
+        <a href="#">⍒</a>
+        <br/>
+        <a href="#">∊</a>
+        <a href="#">⍷</a>
+        <a href="#">⍳</a>
+        <a href="#">⍸</a>
+        <a href="#">⍴</a>
+        <a href="#">?</a>
+        <br/>
+        <a href="#">,</a>
+        <a href="#">⍪</a>
+        <a href="#">⊃</a>
+        <a href="#">]</a>
+        <a href="#">{</a>
+        <a href="#">⌹</a>
+        <br/>
+        <a href="#">⌿</a>
+        <a href="#">⍀</a>
+        <a href="#">/</a>
+        <a href="#">\</a>
+        <a href="#">}</a>
+        <a href="#">⊂</a>
+        <br/>
+        <a href="#">¨</a>
+        <a href="#">⍤</a>
+        <a href="#">⍥</a>
+        <a href="#">.</a>
+        <a href="#">∪</a>
+        <a href="#">∩</a>
+        <br/>
+        <a href="#">∇</a>
+        <a href="#">:</a>
+        <a href="#">&#x2369;</a>
+        &nbsp;
+        <a href="#">⍺</a>
+        <a href="#">⍵</a>
+        
+      </div>
+      <textarea id="input" rows="8"></textarea>
+      <a id="executeLink" href="#" title="execute APL code"><span style="font-size: 85%">&#x2395;</span><span style="margin: 0 2px 0 4px;">&#x2190;</span>&#x234e;</a>
+      <div id="about">
+        <p><b>What is GNU&nbsp;APL.js?</b> GNU&nbsp;APL.js is basically a version of <a href="http://www.gnu.org/software/apl/">GNU&nbsp;APL</a> compiled to Javascript in order to be embedded into a webpage. GNU APL is among the best APL interpreters currently available; it is written in C++ and the <a href="https://github.com/kripken/emscripten">emscripten</a> compiler allowed to compile the C++ code into Javascript with only a few changes. The &ldquo;.js&rdquo; suffix has been added to the name because the Javascript version to prevent the user of this website to underestimate the high quality of the original GNU&nbsp;APL if he/she encounters some issues here.</p>
+        <p><b>What are the differences between GNU&nbsp;APL?</b> First, all libraries that make the interface better have been removed; the shared-memory system was incompatible with the Javascript version and it has been removed as well. Some minor fixes had to be done at some places where a function was unknown to the emscripten compiler. Finally the interactive REPL-based engine had to be replaced with some more rudimentary code executer.</p>
+        <p><b>What is the purpose of GNU&nbsp;APL.js?</b> The main purpose of this website is to allow sharing pieces of APL code with the help of a &ldquo;permalink&rdquo; system (for instance in a forum or in a mail message).</p>
+      </div>
+    </div>
+    <script type="text/javascript" src="apl.js"></script>
+    <script type='text/javascript'>aplRun();</script>
+  </body>
+</html>

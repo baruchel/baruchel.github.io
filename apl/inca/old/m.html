@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>inca</title>
+    <style>
+      body {
+        font-family: monospace;
+        padding: none;
+      }
+
+      #logo {
+        display: block;
+        margin: 4px 0 0;
+        font-size: 48px;
+      }
+      #logo a {
+        text-decoration: none;
+      }
+
+      #status {
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 30px;
+        margin-left: 20px;
+        font-weight: bold;
+      }
+
+      @-webkit-keyframes rotation {
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+      }
+      @-moz-keyframes rotation {
+        from {-moz-transform: rotate(0deg);}
+        to {-moz-transform: rotate(360deg);}
+      }
+      @-o-keyframes rotation {
+        from {-o-transform: rotate(0deg);}
+        to {-o-transform: rotate(360deg);}
+      }
+      @keyframes rotation {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(360deg);}
+      }
+
+      #main {
+        margin: 0 0;
+        width: 100%;
+        display: block;
+        font-size: 24px;
+      }
+
+      #output {
+        display: block;
+      }
+
+      #output p {
+        margin: 0;
+        padding: 0;
+        text-align: left;
+      }
+
+      #output p.in {
+        font-weight: bold;
+      }
+      #output p.out {
+      }
+
+      #input {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        display: block;
+        font-weight: bold;
+        font-size: 24px;
+        border: none;
+        overflow: auto;
+        outline: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        resize: none;
+      }
+
+    </style>
+    <script type="text/javascript">
+
+        // Wait for the page to load first
+        window.onload = function() {
+
+          // Vanilla Coffee c=806854B39C7DA8BAA9FFF5CFD8CDAD
+          //   https://kuler.adobe.com/Vanilla-Coffee-color-theme-3608274/
+          // Rise c=2B3A423F5765EFEFEFBDD4DEE74C3C
+          //   https://kuler.adobe.com/Rise-color-theme-3648332/
+          // Flat energy c=3B4D745D7D8BEBE4B591C0A585A39B
+          //   https://kuler.adobe.com/flat-energy-color-theme-3621704/
+
+          var c1 = "4E525D";
+          var c2 = "687389";
+          var c3 = "ECEAED";
+          var c4 = "B5B8BF";
+          var c5 = "F5AB0E";
+
+          var styles = decodeURIComponent(window.location.hash).substr(1);
+          if (styles.substring(0,2)=='c=') {
+            styles = styles.substring(2);
+            c1 = styles.substring(0,6);
+            c2 = styles.substring(6,12);
+            c3 = styles.substring(12,18);
+            c4 = styles.substring(18,24);
+            c5 = styles.substring(24,30);
+          }
+
+          var css = document.styleSheets[0];
+          css.insertRule("body { background-color: #" + c1
+            +"; color: #" + c3 + ";}",0);
+          css.insertRule("#logo a { color: #" + c5 + "; }",0);
+          css.insertRule("#output p.in { color: #" + c3 + "; }",0);
+          css.insertRule("#output p.out { color: #" + c4 + "; }",0);
+          css.insertRule("#input { background-color: #" + c2
+            +"; color: #" + c3 + ";}",0);
+
+          var d = document.getElementById("input");
+          var o = document.getElementById('output');
+          d.value = ''; // clear browser cache
+
+          // permanent focus on the input field
+          document.getElementById('input').onblur = function (event) {
+            var blurEl = this;
+            setTimeout(function() { blurEl.focus() },10);
+          };
+          // handle Return
+          d.onkeypress = function(e) {
+              if (e.keyCode == 13) {
+                var s = d.value;
+                s = s.replace(/(\r\n|\n|\r)/gm,"");
+                d.value = '';
+                var n = document.createElement('p');
+                n.appendChild(document.createTextNode("   "+s));
+                n.className = "in";
+                o.appendChild(n);
+                process(s);
+                window.scrollTo(0, document.body.scrollHeight);
+              }
+          };
+
+        }
+    </script>
+  </head>
+  <body>
+    <div id="logo"><a id="logoLink" href="./">inca</a></div>
+
+    <div id="status">downloading...</div>
+    
+    <div id="main">
+      <pre id="output"></pre>
+      <input id="input" type="text" autofocus></input>
+    </div>
+    <script type="text/javascript">
+      var statusElement = document.getElementById('status');
+      var Module = {
+        noInitialRun: true,
+        noExitRuntime: true,
+        preRun: [],
+        postRun: [],
+        print: (function() {
+          var element = document.getElementById('output');
+          element.innerHTML = ''; // clear browser cache
+          return function(text) {
+            text = Array.prototype.slice.call(arguments).join(' ');
+            var n = document.createElement('p');
+            n.appendChild(document.createTextNode(text));
+            n.className = "out";
+            element.appendChild(n);
+          };
+        })(),
+        printErr: function(text) {
+          text = Array.prototype.slice.call(arguments).join(' ');
+          if (0) { // XXX disabled for safety typeof dump == 'function') {
+            dump(text + '\n'); // fast, straight to the real console
+          } else {
+            console.log(text);
+          }
+        },
+        canvas: document.getElementById('canvas'),
+        setStatus: function(text) {
+          statusElement.innerHTML = text;
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        }
+      };
+    </script>
+    <script type="text/javascript" src="inca.js"></script>
+    <script type="text/javascript">
+      // wrapper for the process_wrapper C function
+      var process = Module.cwrap('process', null, ['string']);
+    </script>
+  </body>
+</html>
