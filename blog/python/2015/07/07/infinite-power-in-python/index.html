@@ -73,7 +73,7 @@
     <span class="n">infinitepower</span> <span class="o">=</span> <span class="n">__infinitepower__</span><span class="p">()</span>
     <span class="n">infinitepower</span><span class="o">.</span><span class="n">__rxor__</span> <span class="o">=</span> <span class="n">infinitepower</span><span class="o">.</span><span class="n">__rpow__</span></code></pre></div>
 
-<p>This piece of code creates the <code>infinitepower</code> variable which can be used for raising any function to the infinite power:</p>
+<p>This piece of code creates the <code>infinitepower</code> variable which can be used for raising any function to the infinite power. This object may be affected to a new variable with a shorter name for convenience purposes (rename it to <code>oo</code>, <code>Inf</code>, or any other name).</p>
 
 <pre><code>&gt;&gt;&gt; oo=infinitepower
 &gt;&gt;&gt; from math import sqrt, cos
@@ -84,8 +84,6 @@
 </code></pre>
 
 <p>Of course, the operator for “power” is <code>**</code> in Python, but it isn’t much more coding to also allow the variable to be used with <code>^</code> (while it could be held as a very bad idea from a pythonic point of view).</p>
-
-<p>The previous example shows how to rename the variable for convenience purposes (rename it to <code>oo</code>, <code>Inf</code>, or any other name).</p>
 
 		</div>
 	</div>
