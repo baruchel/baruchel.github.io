@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description>topics in functional programming</description>
-    <link>http://baruchel.github.io/</link>
-    <atom:link href="http://baruchel.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 08 Jul 2015 09:02:56 +0200</pubDate>
-    <lastBuildDate>Wed, 08 Jul 2015 09:02:56 +0200</lastBuildDate>
+    <link>http://baruchel.github.iocomputing/</link>
+    <atom:link href="http://baruchel.github.iocomputing/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Wed, 08 Jul 2015 09:13:27 +0200</pubDate>
+    <lastBuildDate>Wed, 08 Jul 2015 09:13:27 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -44,8 +44,8 @@
 &lt;p&gt;The previous example shows how to rename the variable for convenience purposes (rename it to &lt;code&gt;oo&lt;/code&gt;, &lt;code&gt;Inf&lt;/code&gt;, or any other name).&lt;/p&gt;
 </description>
         <pubDate>Tue, 07 Jul 2015 00:00:00 +0200</pubDate>
-        <link>http://baruchel.github.io/python/2015/07/07/infinite-power-in-python/</link>
-        <guid isPermaLink="true">http://baruchel.github.io/python/2015/07/07/infinite-power-in-python/</guid>
+        <link>http://baruchel.github.iocomputing/python/2015/07/07/infinite-power-in-python/</link>
+        <guid isPermaLink="true">http://baruchel.github.iocomputing/python/2015/07/07/infinite-power-in-python/</guid>
         
         
         <category>python</category>
@@ -185,8 +185,8 @@ I find funny the idea of using &lt;code&gt;try&lt;/code&gt; with a single line b
 something (normal behaviour) but we can’t do it because of a recursive call occuring (exception).&lt;/p&gt;
 </description>
         <pubDate>Tue, 03 Dec 2013 00:00:00 +0100</pubDate>
-        <link>http://baruchel.github.io/python/2013/12/03/tail-recursion-in-python/</link>
-        <guid isPermaLink="true">http://baruchel.github.io/python/2013/12/03/tail-recursion-in-python/</guid>
+        <link>http://baruchel.github.iocomputing/python/2013/12/03/tail-recursion-in-python/</link>
+        <guid isPermaLink="true">http://baruchel.github.iocomputing/python/2013/12/03/tail-recursion-in-python/</guid>
         
         
         <category>python</category>
