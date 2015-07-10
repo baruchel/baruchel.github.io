@@ -55,7 +55,7 @@
 	    </span>
 		</p>		
 		<div class="post">
-			<p>A nice feature in the J programming language is the infinite power operator, which gives the ability to raise a function to the infinite power. The idea is to repeatedly apply a function to its previous result until some convergence is reached or until some system is stabilized. Such a feature allows to “hide” many <code>while</code> loops.</p>
+			<p>A nice feature in the J programming language is the infinite power operator, which gives the ability to raise a function to the infinite power. The idea is to repeatedly apply a function to its previous result until some convergence is reached or until some system is stabilized. Such a feature allows to &quot;hide&quot; many <code>while</code> loops.</p>
 
 <p>Here is a link to the page of the <em>J for C programmers</em> book explaining more about this way of coding: <a href="http://www.jsoftware.com/help/jforc/loopless_code_iv_irregular_o.htm">Loopless Code IV</a>.</p>
 
@@ -76,16 +76,14 @@
     <span class="n">infinitepower</span><span class="o">.</span><span class="n">__rxor__</span> <span class="o">=</span> <span class="n">infinitepower</span><span class="o">.</span><span class="n">__rpow__</span></code></pre></div>
 
 <p>This piece of code creates the <code>infinitepower</code> variable which can be used for raising any function to the infinite power. This object may be affected to a new variable with a shorter name for convenience purposes (rename it to <code>oo</code>, <code>Inf</code>, or any other name).</p>
-
-<pre><code>&gt;&gt;&gt; oo=infinitepower
+<div class="highlight"><pre><code class="language-" data-lang="">&gt;&gt;&gt; oo=infinitepower
 &gt;&gt;&gt; from math import sqrt, cos
 &gt;&gt;&gt; (cos**oo)(.5)
 0.7390851332151607
 &gt;&gt;&gt; (sqrt^oo)(.5)
 0.9999999999999999
-</code></pre>
-
-<p>Of course, the operator for “power” is <code>**</code> in Python, but it isn’t much more coding to also allow the variable to be used with <code>^</code> (while it could be held as a very bad idea from a pythonic point of view).</p>
+</code></pre></div>
+<p>Of course, the operator for &quot;power&quot; is <code>**</code> in Python, but it isn&#39;t much more coding to also allow the variable to be used with <code>^</code> (while it could be held as a very bad idea from a pythonic point of view).</p>
 
 		</div>
 	</div>
