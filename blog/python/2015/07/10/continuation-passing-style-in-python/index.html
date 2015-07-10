@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Continuation passing style in Python</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">        
+        <meta name="description" content="A blog covering various topics in functional programming.
+">
+        <link rel="canonical" 
+        href="http://baruchel.github.io/blog/python/2015/07/10/continuation-passing-style-in-python/">
+        
+        <!-- Harmony styles -->
+        <link rel="stylesheet" type="text/css" href="/blog/assets/css/main.css">
+
+        <!-- Modernizr js -->
+        <script async src="/blog/assets/js/modernizr.js"></script>    
+
+        <!-- IE Fixes -->
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->        
+    </head>
+    <body class="theme-base-01">
+        <header class="main-header">
+            <div class="wc-container">
+                <h1><a href="/blog/">/ב/</a></h1>
+                <h2>topics in functional programming</h2>
+                <ul>
+	<li>
+		<a href="http://baruchel.github.io/blog/about">About</a><span>/</span>
+	</li>
+	<li>
+		<a href="http://baruchel.github.io/blog/blog">Archive</a><span>/</span>
+	</li>
+</ul>
+                
+            </div>
+        </header>
+        <div class="page-content wc-container">
+	
+	<div class="post">
+		<h1>Continuation passing style in Python</h1>
+		<p class="post-meta">
+			
+      <span class="categories">
+      python
+      </span> |
+	    
+	    <span class="post-date">
+    	Jul 10, 2015 
+	    </span>
+		</p>		
+		<div class="post">
+			<p>Here are some thoughts concerning the continuation passing style in Python. Of course, being able to take any function as an argument for another function, the language already allows to use such a style of programming when needed; but this artcle focus on some elegant ways of calling a function from the innermost part of an expression without burdening the call stack of the interpreter.</p>
+
+<h2 id="first-part-the-main-idea">First part: the main idea</h2>
+
+<p>First, let’s create a function diplaying together its argument and the current size of the stack; it will be used below in order to check where exactly a call to a continuation is made:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">traceback</span>
+
+    <span class="k">def</span> <span class="nf">disp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()),</span><span class="n">x</span><span class="p">))</span></code></pre></div>
+
+<p>Now, let’s figure out some function performing some kind of computation, adding many calls to the execution stack, and finally calling a continuation. A recursive function will suit these needs:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">test</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="n">k</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span></code></pre></div>
+
+<p>While useless, this function is easy to understand: it calls itself many times  with a decreasing counter then calls the function <code>k</code> with an argument being 42.</p>
+
+<p>Now, lets’s see what happens:</p>
+
+<pre><code>&gt;&gt;&gt; test(disp, 100)
+(103, 42)
+</code></pre>
+
+<p>(The exact left value may change with the interpreter but it should be a little more than 100.)</p>
+
+<p>An elegant way of getting rid of these useless calls waiting to return is to embed the initial call to the <code>test</code> function in some wrapper like:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">c</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="o">*</span><span class="n">a</span><span class="p">)()</span></code></pre></div>
+
+<p>Let’s check:</p>
+
+<pre><code>&gt;&gt;&gt; C(test)(disp, 100)
+(4, 42)
+</code></pre>
+
+<p>The idea is to trap the argument intended to be given to the <code>disp</code> function in a closure, to return and empty the execution stack, and then to call the continuation.</p>
+
+<p>The previous syntax allows a single return value which is the continuation; thus the following function can’t work properly:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">test2</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">test2</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="ow">not</span> <span class="n">b</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="n">k</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="bp">None</span></code></pre></div>
+
+<p>Below is a working example and a faulty one:</p>
+
+<pre><code>&gt;&gt;&gt; C(test2)(disp, 100, True)
+(4, 42)
+&gt;&gt;&gt; C(test2)(disp, 100, False)
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "&lt;stdin&gt;", line 1, in &lt;lambda&gt;
+TypeError: 'NoneType' object is not callable
+</code></pre>
+
+<p>Some workaround can be found with:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C2</span> <span class="o">=</span> <span class="p">(</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span>
+           <span class="p">(</span><span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span><span class="p">()</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">else</span> <span class="n">g</span><span class="p">)</span>
+           <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">c</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="o">*</span><span class="n">a</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span></code></pre></div>
+
+<p>But the following part of the article will focus on the initial case where the single allowed return value is the call to the continuation.</p>
+
+<h2 id="second-part-variants-of-the-previous-solution">Second part: variants of the previous solution</h2>
+
+<p>The above solution requires the user to put the continuation argument <code>k</code> as the first one of the function while many programmers usually put it after all other arguments. This order can be implemented but is less elegant than the previous one:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C3</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)])</span> <span class="p">)()</span></code></pre></div>
+
+<p>I personally like another way for the very same idea (I also use the Y combinator for implementing the recursion in order to only rely here on lambda calculus):</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">Y</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">))(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)))</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">Y</span><span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="n">k</span><span class="p">(</span><span class="mi">42</span><span class="p">))(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">c</span><span class="p">(</span><span class="n">x</span><span class="p">))(</span><span class="n">a</span><span class="p">)()</span></code></pre></div>
+
+<p>which has to be used as:</p>
+
+<pre><code>&gt;&gt;&gt; C(test)(disp)(100)
+</code></pre>
+
+<p>This style is itself a good transition to a more general solution allowing several continuations to be used (according to a case which is decided at the top of the stack but with an evaluation occuring once the stack will become empty):</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">c</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">c</span><span class="p">))(</span><span class="n">a</span><span class="p">)()</span></code></pre></div>
+
+<p>which can still be used as:</p>
+
+<pre><code>&gt;&gt;&gt; C(test)(disp)(100)
+</code></pre>
+
+<p>but which can also be used as:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">disp1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">((</span><span class="s">&quot;ok&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()),</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">disp2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">((</span><span class="s">&quot;err&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()),</span><span class="n">x</span><span class="p">))</span>
+    
+    <span class="n">test</span> <span class="o">=</span> <span class="p">(</span> <span class="k">lambda</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span>
+               <span class="n">Y</span><span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="ow">not</span> <span class="n">j</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span>
+                    <span class="k">else</span> <span class="n">k1</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="k">else</span> <span class="n">k2</span><span class="p">(</span><span class="mi">42</span><span class="p">))(</span><span class="n">n</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span> <span class="p">)</span></code></pre></div>
+
+<p>where two different continuations are now used.</p>
+
+		</div>
+	</div>
+
+
+	
+	<div class="related">
+		<h4>Related Posts</h2>
+		<ul class="posts">
+		    
+		    <li>
+			  <span>07 Jul 2015 &raquo;</span>
+			  <a href="http://baruchel.github.io/blog/python/2015/07/07/infinite-power-in-python/">Infinite power in Python</a>
+		    </li>
+		    
+		    <li>
+			  <span>03 Dec 2013 &raquo;</span>
+			  <a href="http://baruchel.github.io/blog/python/2013/12/03/tail-recursion-in-python/">Optimizing tail-recursion in Python</a>
+		    </li>
+		    
+		</ul>
+	</div>
+	
+
+	<div class="post-footer">
+		<div class="column-1">
+			
+				<a href="http://baruchel.github.io/blog/python/2015/07/07/infinite-power-in-python/"><< Older</a>
+			
+		</div>
+		<div class="column-2"><a href="http://baruchel.github.io/blog/ ">Home</a></div>
+		<div class="column-3">
+			
+				<span>Newer >></span>
+			
+		</div>
+	</div>
+</div>
+ 
+
+        <footer class="main-footer">
+            <div class="wc-container">
+                <div class="column one">
+                    <h6>Few more links</h6>
+<ul class="menu">
+    <li><a href="http://baruchel.github.io/blog/about">About</a></li>
+    <li><a href="http://baruchel.github.io/blog/blog">Archive</a></li>
+    <li><a href="http://baruchel.github.io/blog/faq">Help / FAQ</a></li>    
+</ul>		
+                    
+                </div>
+                <div class="column two">
+                    <h6>Follow me</h6>
+
+<ul class="social-media">
+
+
+    
+
+    
+    <li>
+        <a title="baruchel on Github" 
+            href="https://github.com/baruchel" 
+            class="github wc-img-replace" target="_blank">Github</a>
+    </li>
+     
+
+    
+    <li>
+        <a title="user2560053 on StackExchange" 
+            href="http://stackexchange.com/users/3018511/user2560053"
+            class="stackexchange wc-img-replace" target="_blank">StackExchange</a>
+    </li>
+     
+
+    
+
+    
+
+    
+
+    
+
+</ul>
+
+                </div>
+            </div>
+            <p class="wc-container disclaimer">
+                
+	Made by <a href="http://gayan.me" target="_blank">Gayan Virajith</a> For everyone.      
+
+Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>
+            </p>
+        </footer>
+        <script type="text/javascript">
+          /* To avoid render blocking css */
+          var cb = function() {
+            var l = document.createElement('link'); l.rel = 'stylesheet';
+            l.href = 'http://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin';
+            var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+          };
+          var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+              webkitRequestAnimationFrame || msRequestAnimationFrame;
+          if (raf) raf(cb);
+          else window.addEventListener('load', cb);
+        </script>
+        <!-- jQuery -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- When no internet load JQuery from local -->
+        <script>window.jQuery || document.write('<script src="/blog/assets/js/jquery.min.js"><\/script>')</script>
+        <!-- Site js -->
+        <script src="/blog/assets/js/all.js"></script>
+        <!-- Google analytics  -->
+        
+    </body>        
+</html>
