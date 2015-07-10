@@ -60,21 +60,20 @@
 <p>Here is a link to the page of the <em>J for C programmers</em> book explaining more about this way of coding: <a href="http://www.jsoftware.com/help/jforc/loopless_code_iv_irregular_o.htm">Loopless Code IV</a>.</p>
 
 <p>Implementing such a feature in Python is rather easy:</p>
-
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">__infinitepower__</span><span class="p">():</span>
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">pass</span>
-        <span class="k">def</span> <span class="nf">__rpow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
-            <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-                <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-                    <span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">a</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="n">b</span>
-                    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
-            <span class="k">return</span> <span class="n">func</span>
-    <span class="n">infinitepower</span> <span class="o">=</span> <span class="n">__infinitepower__</span><span class="p">()</span>
-    <span class="n">infinitepower</span><span class="o">.</span><span class="n">__rxor__</span> <span class="o">=</span> <span class="n">infinitepower</span><span class="o">.</span><span class="n">__rpow__</span></code></pre></div>
-
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">__rpow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">a</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">b</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="k">return</span> <span class="n">func</span>
+<span class="n">infinitepower</span> <span class="o">=</span> <span class="n">__infinitepower__</span><span class="p">()</span>
+<span class="n">infinitepower</span><span class="o">.</span><span class="n">__rxor__</span> <span class="o">=</span> <span class="n">infinitepower</span><span class="o">.</span><span class="n">__rpow__</span>
+</code></pre></div>
 <p>This piece of code creates the <code>infinitepower</code> variable which can be used for raising any function to the infinite power. This object may be affected to a new variable with a shorter name for convenience purposes (rename it to <code>oo</code>, <code>Inf</code>, or any other name).</p>
 <div class="highlight"><pre><code class="language-" data-lang="">&gt;&gt;&gt; oo=infinitepower
 &gt;&gt;&gt; from math import sqrt, cos
