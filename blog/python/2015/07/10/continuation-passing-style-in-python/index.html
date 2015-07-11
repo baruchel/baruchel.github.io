@@ -147,8 +147,17 @@ TypeError: 'NoneType' object is not callable
 <li>removing one level more in the execution stack by initially returning a tuple conataining the function and its arguments rather than a function.</li>
 </ul>
 
-<p>The wrapper becomes:</p>
+<p>The wrapper becomes (in Python 2):</p>
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">c</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="nb">apply</span><span class="p">(</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">c</span><span class="p">))(</span><span class="o">*</span><span class="n">a</span><span class="p">))</span>
+</code></pre></div>
+<p>and in Python 3 (where <code>apply</code> doesn&#39;t exist any more):</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">C</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">D</span><span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">E</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">):</span>
+      <span class="n">func</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">c</span><span class="p">))(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">E</span>
+  <span class="k">return</span> <span class="n">D</span>
 </code></pre></div>
 <p>Now the continuation will be added to the stack only one level above the wrapper itself with no intermediate call.</p>
 
