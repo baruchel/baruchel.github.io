@@ -135,8 +135,9 @@ TypeError: 'NoneType' object is not callable
            <span class="n">Y</span><span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="ow">not</span> <span class="n">j</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span>
                 <span class="k">else</span> <span class="n">k1</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="k">else</span> <span class="n">k2</span><span class="p">(</span><span class="mi">42</span><span class="p">))(</span><span class="n">n</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span> <span class="p">)</span>
 </code></pre></div>
-<p>where two different continuations are now used.</p>
-
+<p>where two different continuations are now used. The new wrapper can be used as:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">C(test)(disp1,disp2)(15)
+</code></pre></div>
 		</div>
 	</div>
 
