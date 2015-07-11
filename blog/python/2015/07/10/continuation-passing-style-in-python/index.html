@@ -120,7 +120,7 @@ TypeError: 'NoneType' object is not callable
 <div class="highlight"><pre><code class="language-" data-lang="">&gt;&gt;&gt; C(test)(disp)(100)
 </code></pre></div>
 <p>This style is itself a good transition to a more general solution allowing several continuations to be used (according to a case which is decided at the top of the stack but with an evaluation occuring once the stack will become empty):</p>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">c</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">c</span><span class="p">))(</span><span class="n">a</span><span class="p">)()</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">c</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">c</span><span class="p">))(</span><span class="o">*</span><span class="n">a</span><span class="p">)()</span>
 </code></pre></div>
 <p>which can still be used as:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">&gt;&gt;&gt; C(test)(disp)(100)
@@ -138,6 +138,20 @@ TypeError: 'NoneType' object is not callable
 <p>where two different continuations are now used. The new wrapper can be used as:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">C(test)(disp1,disp2)(15)
 </code></pre></div>
+<h3>Third part: two more refinements</h3>
+
+<p>Two more improvements will now be added to the wrapper:</p>
+
+<ul>
+<li>allowing the continuation to take any number of arguments (usual continuation passing style requires the continuation to take one argument but it won&#39;t hurt here to allow more);</li>
+<li>removing one level more in the execution stack by initially returning a tuple conataining the function and its arguments rather than a function.</li>
+</ul>
+
+<p>The wrapper becomes:</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">c</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="nb">apply</span><span class="p">(</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">c</span><span class="p">))(</span><span class="o">*</span><span class="n">a</span><span class="p">))</span>
+</code></pre></div>
+<p>Now the continuation will be added to the stack only one level above the wrapper itself with no intermediate call.</p>
+
 		</div>
 	</div>
 
