@@ -152,14 +152,18 @@ TypeError: 'NoneType' object is not callable
 </code></pre></div>
 <p>and in Python 3 (where <code>apply</code> doesn&#39;t exist any more):</p>
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">C</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">D</span><span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">E</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">):</span>
-      <span class="n">func</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">c</span><span class="p">))(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
-      <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">E</span>
-  <span class="k">return</span> <span class="n">D</span>
+    <span class="k">def</span> <span class="nf">D</span><span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">E</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">func</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">c</span><span class="p">))(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">E</span>
+    <span class="k">return</span> <span class="n">D</span>
 </code></pre></div>
 <p>Now the continuation will be added to the stack only one level above the wrapper itself with no intermediate call.</p>
+
+<h3>The final word</h3>
+
+<p>I finally wrote a little module containing various implementations of a general wrapper for handling both tail-elimination: in tail-recursion and in continuation-passing style; it is located at <a href="https://github.com/baruchel/tco">https://github.com/baruchel/tco</a></p>
 
 		</div>
 	</div>
