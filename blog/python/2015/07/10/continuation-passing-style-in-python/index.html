@@ -57,7 +57,7 @@
 		<div class="post">
 			<p>Here are some thoughts concerning the continuation passing style in Python. Of course, being able to take any function as an argument for another function, the language already allows to use such a style of programming when needed; but this artcle focus on some elegant ways of calling a function from the innermost part of an expression without burdening the call stack of the interpreter. Like in a previous article, tail-call optimization is the purpose of this study.</p>
 
-<h3>First part: the main idea</h3>
+<h3 id="first-part-the-main-idea">First part: the main idea</h3>
 
 <p>First, let&#39;s create a function diplaying together its argument and the current size of the stack; it will be used below in order to check where exactly a call to a continuation is made:</p>
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">traceback</span>
@@ -106,7 +106,7 @@ TypeError: 'NoneType' object is not callable
 </code></pre></div>
 <p>But the following part of the article will focus on the initial case where the single allowed return value is the call to the continuation.</p>
 
-<h3>Second part: variants of the previous solution</h3>
+<h3 id="second-part-variants-of-the-previous-solution">Second part: variants of the previous solution</h3>
 
 <p>The above solution requires the user to put the continuation argument <code>k</code> as the first one of the function while many programmers usually put it after all other arguments. This order can be implemented but is less elegant than the previous one:</p>
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">C3</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)])</span> <span class="p">)()</span>
@@ -138,7 +138,7 @@ TypeError: 'NoneType' object is not callable
 <p>where two different continuations are now used. The new wrapper can be used as:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">C(test)(disp1,disp2)(15)
 </code></pre></div>
-<h3>Third part: two more refinements</h3>
+<h3 id="third-part-two-more-refinements">Third part: two more refinements</h3>
 
 <p>Two more improvements will now be added to the wrapper:</p>
 
@@ -161,7 +161,7 @@ TypeError: 'NoneType' object is not callable
 </code></pre></div>
 <p>Now the continuation will be added to the stack only one level above the wrapper itself with no intermediate call.</p>
 
-<h3>The final word</h3>
+<h3 id="the-final-word">The final word</h3>
 
 <p>I finally wrote a little module containing various implementations of a general wrapper for handling both tail-elimination: in tail-recursion and in continuation-passing style; it is located at <a href="https://github.com/baruchel/tco">https://github.com/baruchel/tco</a></p>
 

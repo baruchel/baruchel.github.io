@@ -5,15 +5,15 @@
     <description>topics in functional programming</description>
     <link>http://baruchel.github.io/blog/</link>
     <atom:link href="http://baruchel.github.io/blog/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 12 Jul 2015 16:54:25 +0200</pubDate>
-    <lastBuildDate>Sun, 12 Jul 2015 16:54:25 +0200</lastBuildDate>
+    <pubDate>Mon, 13 Jul 2015 09:06:59 +0200</pubDate>
+    <lastBuildDate>Mon, 13 Jul 2015 09:06:59 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>Continuation passing style in Python</title>
         <description>&lt;p&gt;Here are some thoughts concerning the continuation passing style in Python. Of course, being able to take any function as an argument for another function, the language already allows to use such a style of programming when needed; but this artcle focus on some elegant ways of calling a function from the innermost part of an expression without burdening the call stack of the interpreter. Like in a previous article, tail-call optimization is the purpose of this study.&lt;/p&gt;
 
-&lt;h3&gt;First part: the main idea&lt;/h3&gt;
+&lt;h3 id=&quot;first-part-the-main-idea&quot;&gt;First part: the main idea&lt;/h3&gt;
 
 &lt;p&gt;First, let&amp;#39;s create a function diplaying together its argument and the current size of the stack; it will be used below in order to check where exactly a call to a continuation is made:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;traceback&lt;/span&gt;
@@ -62,7 +62,7 @@ TypeError: 'NoneType' object is not callable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;But the following part of the article will focus on the initial case where the single allowed return value is the call to the continuation.&lt;/p&gt;
 
-&lt;h3&gt;Second part: variants of the previous solution&lt;/h3&gt;
+&lt;h3 id=&quot;second-part-variants-of-the-previous-solution&quot;&gt;Second part: variants of the previous solution&lt;/h3&gt;
 
 &lt;p&gt;The above solution requires the user to put the continuation argument &lt;code&gt;k&lt;/code&gt; as the first one of the function while many programmers usually put it after all other arguments. This order can be implemented but is less elegant than the previous one:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;C3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)()&lt;/span&gt;
@@ -94,7 +94,7 @@ TypeError: 'NoneType' object is not callable
 &lt;p&gt;where two different continuations are now used. The new wrapper can be used as:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;C(test)(disp1,disp2)(15)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Third part: two more refinements&lt;/h3&gt;
+&lt;h3 id=&quot;third-part-two-more-refinements&quot;&gt;Third part: two more refinements&lt;/h3&gt;
 
 &lt;p&gt;Two more improvements will now be added to the wrapper:&lt;/p&gt;
 
@@ -117,7 +117,7 @@ TypeError: 'NoneType' object is not callable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now the continuation will be added to the stack only one level above the wrapper itself with no intermediate call.&lt;/p&gt;
 
-&lt;h3&gt;The final word&lt;/h3&gt;
+&lt;h3 id=&quot;the-final-word&quot;&gt;The final word&lt;/h3&gt;
 
 &lt;p&gt;I finally wrote a little module containing various implementations of a general wrapper for handling both tail-elimination: in tail-recursion and in continuation-passing style; it is located at &lt;a href=&quot;https://github.com/baruchel/tco&quot;&gt;https://github.com/baruchel/tco&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -189,7 +189,7 @@ fully usable tools for implementing tail-recursion optimization.&lt;/p&gt;
 &lt;p&gt;As a personal convenience, I wrote a small module implementing such an optimization
 by two different ways. I would like to discuss here about my two main functions.&lt;/p&gt;
 
-&lt;h2&gt;The clean way: modifying the Y combinator&lt;/h2&gt;
+&lt;h2 id=&quot;the-clean-way-modifying-the-y-combinator&quot;&gt;The clean way: modifying the Y combinator&lt;/h2&gt;
 
 &lt;p&gt;The Y combinator is well known; it allows to use lambda functions in a recursive
 manner, but it doesn&amp;#39;t allow by itself to embed recursive calls in a loop. Lambda
@@ -255,7 +255,7 @@ evaluating several simple expressions, which is the case in this second version.
 I didn&amp;#39;t keep this new function in my module, and I see no circumstances where it
 could be used rather than the &amp;quot;official&amp;quot; one.&lt;/p&gt;
 
-&lt;h2&gt;Continuation passing style with exceptions&lt;/h2&gt;
+&lt;h2 id=&quot;continuation-passing-style-with-exceptions&quot;&gt;Continuation passing style with exceptions&lt;/h2&gt;
 
 &lt;p&gt;Here is a more general function; it is able to handle all tail-recursive functions,
 including those returning other functions. Recursive calls are recognized from

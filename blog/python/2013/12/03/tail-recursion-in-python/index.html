@@ -72,7 +72,7 @@ fully usable tools for implementing tail-recursion optimization.</p>
 <p>As a personal convenience, I wrote a small module implementing such an optimization
 by two different ways. I would like to discuss here about my two main functions.</p>
 
-<h2>The clean way: modifying the Y combinator</h2>
+<h2 id="the-clean-way-modifying-the-y-combinator">The clean way: modifying the Y combinator</h2>
 
 <p>The Y combinator is well known; it allows to use lambda functions in a recursive
 manner, but it doesn&#39;t allow by itself to embed recursive calls in a loop. Lambda
@@ -138,7 +138,7 @@ evaluating several simple expressions, which is the case in this second version.
 I didn&#39;t keep this new function in my module, and I see no circumstances where it
 could be used rather than the &quot;official&quot; one.</p>
 
-<h2>Continuation passing style with exceptions</h2>
+<h2 id="continuation-passing-style-with-exceptions">Continuation passing style with exceptions</h2>
 
 <p>Here is a more general function; it is able to handle all tail-recursive functions,
 including those returning other functions. Recursive calls are recognized from
