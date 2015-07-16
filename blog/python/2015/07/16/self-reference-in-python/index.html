@@ -58,18 +58,26 @@
 			<p>The J language has a verb called &quot;Self Reference&quot; which is <code>$:</code> allowing a recursive call to the &quot;longest verb that contains it&quot; (see <a href="http://www.jsoftware.com/help/dictionary/d212.htm">J dictionary</a>).</p>
 
 <p>Here are some tricks for implementing such a feature in Python:</p>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">inspect</span>
-<span class="k">def</span> <span class="nf">self</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="bp">None</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">__code__</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_code</span>
-    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">class</span> <span class="nc">_self_reference</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="bp">None</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">__code__</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_code</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="bp">None</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">__code__</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_code</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span>
+<span class="bp">self</span> <span class="o">=</span> <span class="n">_self_reference</span><span class="p">()</span>
 </code></pre></div>
-<p>Of course the function can be renamed like <code>this</code> or even simply <code>_</code>.</p>
+<p>Of course the <code>self</code> variable can be renamed like <code>this</code> or even simply <code>_</code>.</p>
 
 <p>The <code>self</code> function now calls the function called previously with new arguments. Now, the factorial function is:</p>
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fac</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">n</span><span class="o">*</span><span class="bp">self</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-<p>Of course, some care has to be taken concerning the numbers of call levels that a single function may add to the execution stack. The previous definition will only work for calling again a function one level below the <code>self</code> call.</p>
+<p>Of course, some care has to be taken concerning the numbers of call levels that a single function may add to the execution stack. If needed, the syntax <code>self[1](...)</code> may be used to get to refer to the the function called one more level below, and of course any positive integer will work.</p>
 
 		</div>
 	</div>
