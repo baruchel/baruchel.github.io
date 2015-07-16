@@ -66,9 +66,11 @@
 </code></pre></div>
 <p>Of course the function can be renamed like <code>this</code> or even simply <code>_</code>.</p>
 
-<p>Now, the factorial function is:</p>
+<p>The <code>self</code> function now calls the function called previously with new arguments. Now, the factorial function is:</p>
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fac</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">n</span><span class="o">*</span><span class="bp">self</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
+<p>Of course, some care has to be taken concerning the numbers of call levels that a single function may add to the execution stack. The previous definition will only work for calling again a function one level below the <code>self</code> call.</p>
+
 		</div>
 	</div>
 
