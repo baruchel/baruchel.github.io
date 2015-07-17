@@ -57,7 +57,7 @@
 		<div class="post">
 			<p>The J language has a verb called &quot;Self Reference&quot; which is <code>$:</code> allowing a recursive call to the &quot;longest verb that contains it&quot; (see <a href="http://www.jsoftware.com/help/dictionary/d212.htm">J dictionary</a>).</p>
 
-<p>Here is a way for implementing a similar feature in Python:</p>
+<p>Here is a way for implementing a similar feature in Python. I made it work on several versions of Python (versions 2 and 3 with CPython as well as with Pypy).</p>
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sys</span>
 <span class="k">class</span> <span class="nc">_self_reference</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
