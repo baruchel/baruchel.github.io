@@ -65,11 +65,11 @@
         <span class="n">f</span><span class="o">.</span><span class="n">__code__</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_code</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
             <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="bp">None</span>
             <span class="n">f</span><span class="o">.</span><span class="n">__code__</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_code</span>
             <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">f</span>
+        <span class="k">return</span> <span class="n">func</span>
 <span class="bp">self</span> <span class="o">=</span> <span class="n">_self_reference</span><span class="p">()</span>
 </code></pre></div>
 <p>Of course the <code>self</code> variable can be renamed like <code>this</code> or even simply <code>_</code>.</p>
@@ -79,6 +79,9 @@
 </code></pre></div>
 <p>Of course, some care has to be taken concerning the numbers of call levels that a single function may add to the execution stack. If needed, the syntax <code>self[1](...)</code> may be used to get to refer to the the function called one more level below, and of course any positive integer will work.</p>
 
+<p>The following example is rather useless but it shows how to jump to the second level by complicating the previous definition of the factorial:</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fac2</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">n</span><span class="o">*</span><span class="p">((</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">))(</span><span class="n">n</span><span class="p">))</span>
+</code></pre></div>
 		</div>
 	</div>
 
