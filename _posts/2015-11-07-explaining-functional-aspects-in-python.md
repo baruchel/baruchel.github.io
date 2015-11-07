@@ -101,6 +101,12 @@ You can now use the function with something like `search(tree,42)` in order to s
 
 Now, how does it work? The important things are the parameters: `self`, `k1` and `k2`. Only the first one is required (you can call it with another name if you wish); you can put as many as you want. The letter `k` is a current name in the theory of continuations but you can also choose more explicit names than `k1` or `k2`. These three parameters allow the function inside to call either itself or any other function as the _continuation_ of the whole `search` function.
 
+Except the first parameter (here `self`), all these parameters are associated to functions to be called later with a first call to the function returned by the `C` wrapper; the second version above may lead to an easier understanding if we have a look at the very last line:
+
+~~~python
+search = C(search)(exit_success, exit_failure)
+~~~
+
 #### A second example: escaping from an infinite loop
 
 Look carefully at the second example below; you will notice a `while True` statement calling a classical python function; how could the program escape from the infinite loop by calling the `untrap` function? The trick is that the very pythonic `untrap` function takes as a parameter the outermost continuation of the `trap` function; thus the infinite loop is started, the `untrap` function is normally called (and added to one more level of the execution stack since it isn't an optimized function), and the `untrap` function calls (from the inside of the loop) a continuation which is _outside_ of the loop. Here the call `trap()` will evaluate to 42.
