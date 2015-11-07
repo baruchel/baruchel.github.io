@@ -149,3 +149,5 @@ trap2 = C(trap2)()
 ~~~
 
 Again, you can see an infinite loop, but the new thing is that the function called from the infinite loop in `trap1` isn't a classical python function as previously but _another_ function called `trap2` optimized by the module tco. One could wonder whether the system is clever enough to understand that the `k(42)` call must not be confused with the continuation of the innermost C function or not, but it actually is: the call to `trap1()` is (as expected) evaluated to 42.
+
+You may think it as a kind of `goto` statement but rather than the old _horizontal_ goto jumping from a location to another one, it should be rather thought as a _vertical_ goto jumping from somewhere in the stack to a previous level.
