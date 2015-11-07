@@ -149,7 +149,7 @@ This can be useful for exiting several loops at the same time; it is well known 
 
 #### Nested systems of continuations
 
-The previous version of the tco module (related to the ideas [here](http://baruchel.github.io/python/2015/07/10/continuation-passing-style-in-python/)) wouldn't allow to nest several distinct systems of functions passing their own continuation. The code of the last version was carefully redesigned for allowing it. See the code below:
+The previous version of the tco module (related to the ideas I described [here](http://baruchel.github.io/python/2015/07/10/continuation-passing-style-in-python/)) wouldn't allow to nest several distinct systems of functions passing their own continuation. The code of the last version was carefully redesigned for allowing it. See the code below:
 
 ~~~python
 from tco import C
