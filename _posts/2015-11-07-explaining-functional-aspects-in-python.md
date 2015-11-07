@@ -17,7 +17,7 @@ To that question, the answer is easy: _there is absolutely nothing that I can do
 
 ### Using the tco module
 
-The [tco](https://github.com/baruchel/tco) module is a powerful module made of a couple of lines allowing mainly:
+The [tco](https://github.com/baruchel/tco) module is a powerful module made of only a couple of lines allowing mainly:
 
   * tail-call optimization
   * optimized tail-recursion
@@ -28,4 +28,20 @@ Two ideas lie behind these features: repeatedly call functions without having th
 
 #### A first example: a binary search tree
 
+Let's assume we have a binary tree; searching some node in it is easely done with recursion. Of course, python can do it already very well and most of the time the default size of the execution stack is enough; but I will show here how to do it with tail-recursion. I will also add one more thing: directly escaping from the deepest call of the recursion to the next function which has to handle the result of the search in some way _without escaping from the recursion by using `return` statements_.
 
+First, let's build some perfect binary tree:
+
+~~~python
+from itertools import groupby
+from random import sample
+nbrlevels = 17                # number of levels in the tree
+n = 2**nbrlevels - 1          # number of nodes
+t = sample(range(2*n), n)     # values of the nodes
+t.sort()
+def make_tree(l):
+    if len(l)==1: return [l[0], [], []]
+    return [l[0], make_tree(l[1:len(l)//2+1]),
+                  make_tree(l[len(l)//2+1:])]
+tree = make_tree(t)
+~~~
