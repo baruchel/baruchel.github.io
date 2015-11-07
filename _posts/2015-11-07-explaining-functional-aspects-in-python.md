@@ -28,7 +28,7 @@ Two ideas lie behind these features: repeatedly call functions without having th
 
 ![Drawing hands by M.C. Escher](https://upload.wikimedia.org/wikipedia/en/b/ba/DrawingHands.jpg)
 
-#### A first example: a binary search tree
+##### A first example: a binary search tree
 
 Let's assume we have a binary tree; searching some node in it is easely done with recursion. Of course, python can do it already very well and most of the time the default size of the execution stack is enough; but I will show here how to do it with tail-recursion. I will also add one more thing: directly escaping from the deepest call of the recursion to the next function which has to handle the result of the search in some way _without escaping from the recursion by using `return` statements_.
 
@@ -84,7 +84,7 @@ Of course you could object that nobody would write such a code; if you like it r
 ~~~python
 from tco import C
 
-def csearch(self, k1, k2):
+def search(self, k1, k2):
   def code(node, n): 
     if n == node[0]: k1(node)
     elif node[1]:
@@ -92,9 +92,13 @@ def csearch(self, k1, k2):
       else: self(node[2],n)
     else: k2()
   return code
-csearch = C(csearch)(exit_success, exit_failure)
+search = C(search)(exit_success, exit_failure)
 ~~~
 
-which will work equally; notice that using the `return` statement is useless (you can use it if you want but you don't have to use it).
+which will work equally; notice that using the `return` statement is useless in the body of the `code` part (you can use it if you want but you don't have to use it).
 
 You can now use the function with something like `search(tree,42)` in order to search for the value 42 in the tree; the `do_something` function doesn't do anything interesting here except printing a message, but the important thing is that this function will be directly executed outside of the recursion despite appearances.
+
+Now, how does it work? The important things are the parameters: `self`, `k1` and `k2`. Only the first one is required (you can call it with another name if you wish); you can put as many as you want. The letter `k` is a current name in the theory of continuations but you can also choose more explicit names than `k1` or `k2`. These three parameters allow the function inside to call either itself or any other function as the _continuation_ of the whole `search` function.
+
+##### A second example: escaping from an infinite loop
