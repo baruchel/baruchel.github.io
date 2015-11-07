@@ -145,6 +145,8 @@ In Van Vogt's novel _The Wizard of Linn_, Clane owns a sphere which is itself th
 
 ![Print gallery by M.C. Escher](https://upload.wikimedia.org/wikipedia/en/0/02/Print_Gallery_by_M._C._Escher.jpg)
 
+This can be useful for exiting several loops at the same time; it is well known that the `break` statement only allows to exit from the innermost loop (for that reason, programmers often use some rather ugly tricks like using booleans as flags for emulating a more powerful `break`).
+
 #### Nested systems of continuations
 
 The previous version of the tco module (related to the ideas [here](http://baruchel.github.io/python/2015/07/10/continuation-passing-style-in-python/) wouldn't allow to nest several distinct systems of functions passing their own continuation. The code of the last version was carefully redesigned for allowing it. See the code below:
