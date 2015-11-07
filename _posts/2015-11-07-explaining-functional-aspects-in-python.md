@@ -47,3 +47,34 @@ def make_tree(l):
                   make_tree(l[len(l)//2+1:])]
 tree = make_tree(t)
 ~~~
+
+You can now use the tco module for writing a function that can both:
+
+  * call itself (recursion) without overloading the stack
+  * call another function from the inside of the recursion without having to previously exit from the recursion
+
+
+~~~python
+from tco import C
+
+def do_something(node):
+    # an arbitrary function for simulating some manipulations
+    print "The node",node[0],"is in the tree."
+
+# exit function
+exit_success = C(lambda self: do_something)()
+exit_failure = C(lambda self: lambda : None)()
+
+# search function
+search = C(lambda self, k1, k2: lambda node, n:
+       k1(node)
+    if n==node[0]
+       else ( # not the current node
+                 ( # children do exist
+                      self(node[1],n) # search left
+                   if n < node[2][0]
+                      else self(node[2],n) ) # search right
+              if node[1]
+                 else k2() # no child exists
+            ))(exit_success, exit_failure)
+~~~
