@@ -95,7 +95,7 @@ def search(self, k1, k2):
 search = C(search)(exit_success, exit_failure)
 ~~~
 
-which will work equally; notice that using the `return` statement is useless in the body of the `code` part (you can use it if you want but you don't have to use it and I think you shouldn't use it if you really understand what I will explain below).
+which will work equally; notice that using the `return` statement is useless in the body of the `code` part (you can use it if you want but _you don't have to_ use it and I think _you shouldn't_ use it if you really understand what I will explain below).
 
 You can now use the function with something like `search(tree,42)` in order to search for the value 42 in the tree; the `do_something` function doesn't do anything interesting here except printing a message, but the important thing is that this function will be directly executed outside of the recursion despite appearances.
 
