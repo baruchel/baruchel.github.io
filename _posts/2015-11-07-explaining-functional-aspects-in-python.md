@@ -26,6 +26,8 @@ The [tco](https://github.com/baruchel/tco) module is a powerful module made of o
 
 Two ideas lie behind these features: repeatedly call functions without having the size of the execution stack increasing and possibly jump back from a place in the execution stack to a previous one _without passing through the intermediate calls and their own waiting `return` statements_.
 
+![Drawing hands by M.C. Escher](https://upload.wikimedia.org/wikipedia/en/b/ba/DrawingHands.jpg)
+
 #### A first example: a binary search tree
 
 Let's assume we have a binary tree; searching some node in it is easely done with recursion. Of course, python can do it already very well and most of the time the default size of the execution stack is enough; but I will show here how to do it with tail-recursion. I will also add one more thing: directly escaping from the deepest call of the recursion to the next function which has to handle the result of the search in some way _without escaping from the recursion by using `return` statements_.
@@ -35,7 +37,7 @@ First, let's build some perfect binary tree:
 ~~~python
 from itertools import groupby
 from random import sample
-nbrlevels = 17                # number of levels in the tree
+nbrlevels = 20                # number of levels in the tree
 n = 2**nbrlevels - 1          # number of nodes
 t = sample(range(2*n), n)     # values of the nodes
 t.sort()
