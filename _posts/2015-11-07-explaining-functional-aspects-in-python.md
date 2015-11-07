@@ -101,7 +101,7 @@ You can now use the function with something like `search(tree,42)` in order to s
 
 Now, how does it work? The important things are the parameters: `self`, `k1` and `k2`. Only the first one is required (you can call it with another name if you wish); you can put as many as you want. The letter `k` is a current name in the theory of continuations but you can also choose more explicit names than `k1` or `k2` (like `success` or `failure` for instance). These three parameters allow the function inside to call either itself or any other function as the _continuation_ of the whole `search` function.
 
-Except the first parameter (here `self`), all these parameters are associated to functions to be called later with a first call to the function returned by the `C` wrapper; the second version above may lead to an easier understanding if we have a look at the very last line:
+Except the first parameter (which is called here `self`), all these parameters are associated to functions (to be called later) when the function returned by the `C` wrapper is initially called (with these functions as arguments); the second version of the code above may lead to an easier understanding if we have a look at the very last line:
 
 ~~~python
 search = C(search)(exit_success, exit_failure)
