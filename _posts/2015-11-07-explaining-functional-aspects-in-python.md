@@ -28,7 +28,7 @@ Two ideas lie behind these features: repeatedly call functions without having th
 
 ![Drawing hands by M.C. Escher](https://upload.wikimedia.org/wikipedia/en/b/ba/DrawingHands.jpg)
 
-##### A first example: a binary search tree
+#### A first example: a binary search tree
 
 Let's assume we have a binary tree; searching some node in it is easely done with recursion. Of course, python can do it already very well and most of the time the default size of the execution stack is enough; but I will show here how to do it with tail-recursion. I will also add one more thing: directly escaping from the deepest call of the recursion to the next function which has to handle the result of the search in some way _without escaping from the recursion by using `return` statements_.
 
@@ -101,4 +101,24 @@ You can now use the function with something like `search(tree,42)` in order to s
 
 Now, how does it work? The important things are the parameters: `self`, `k1` and `k2`. Only the first one is required (you can call it with another name if you wish); you can put as many as you want. The letter `k` is a current name in the theory of continuations but you can also choose more explicit names than `k1` or `k2`. These three parameters allow the function inside to call either itself or any other function as the _continuation_ of the whole `search` function.
 
-##### A second example: escaping from an infinite loop
+#### A second example: escaping from an infinite loop
+
+Look carefully at the second example below; you will notice a `while True` statement calling a classical python function; how could the program escape from the infinite loop by calling the `untrap` function? The trick is that the very pythonic `untrap` function takes as a parameter the outermost continuation of the `trap` function; thus the infinite loop is started, the `untrap` function is normally called (and added to one more level of the execution stack since it isn't an optimized function), and the `untrap` function calls (from the inside of the loop) a continuation which is _outside_ of the loop.
+
+~~~python
+escape = C(lambda f: lambda n: n)()
+
+def untrap(k):
+  k(42)
+
+def trap(self, k1):
+  def code():
+    while True:
+      untrap(k1)
+  return code
+trap = C(trap)(escape)
+~~~
+
+In Van Vogt's novel _The Wizard of Linn_, Clane owns a sphere which is itself the whole universe: Clane is _inside_ the universe but it can as well act upon the universe from _outide of it_. See also the lithograph by M.C. Escher called _Print Gallery_; the standing man is _inside_ the painting on the wall and at the same time _outside_ of it.
+
+![Print gallery by M.C. Escher](https://upload.wikimedia.org/wikipedia/en/0/02/Print_Gallery_by_M._C._Escher.jpg)
