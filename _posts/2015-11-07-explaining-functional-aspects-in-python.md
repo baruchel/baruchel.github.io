@@ -119,7 +119,7 @@ def test(self):
 test = C(test)()
 ~~~
 
-This code has no real use; it merely creates a function`test` returning the square of its argument (the special features of the module aren't used here)), but you can see that normally returning any object is also allowed.
+This code has no real use; it merely creates a function`test` returning the square of its argument (the special features of the module aren't used here)), but you can check that normally returning any object is also allowed.
 
 #### A second example: escaping from an infinite loop
 
@@ -154,7 +154,7 @@ The previous version of the tco module (related to the ideas [here](http://baruc
 ~~~python
 from tco import C
 
-escape = C(lambda f: lambda n: n)()
+escape = C(lambda f: lambda n: n)() # identity function
 
 def trap1(self, k1):
   def code():
