@@ -107,6 +107,20 @@ Except the first parameter (here `self`), all these parameters are associated to
 search = C(search)(exit_success, exit_failure)
 ~~~
 
+But you are not forced to use these continuations for exiting from such a function; you can also use a normal `return` statement (and even use several kinds of exit according to some case: either a `return` or a continuation). See the quick example below:
+
+~~~python
+from tco import C
+
+def test(self):
+  def code(n):
+    return n**2
+  return code
+test = C(test)()
+~~~
+
+This code has no real use; it merely creates a function`test` returning the square of its argument (the special features of the module aren't used here)), but you can see that normally returning any object is also allowed.
+
 #### A second example: escaping from an infinite loop
 
 Look carefully at the second example below; you will notice a `while True` statement calling a classical python function; how could the program escape from the infinite loop by calling the `untrap` function? The trick is that the very pythonic `untrap` function takes as a parameter the outermost continuation of the `trap` function; thus the infinite loop is started, the `untrap` function is normally called (and added to one more level of the execution stack since it isn't an optimized function), and the `untrap` function calls (from the inside of the loop) a continuation which is _outside_ of the loop. Here the call `trap()` will evaluate to 42.
