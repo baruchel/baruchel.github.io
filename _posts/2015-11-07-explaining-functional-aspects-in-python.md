@@ -79,7 +79,7 @@ search = C(lambda self, k1, k2: lambda node, n:
             ))(exit_success, exit_failure)
 ~~~
 
-Of course you could object that nobody would write such a code; if you like it rather you can rather write:
+Of course you could object that nobody would write such a code (though it can be very handy for smaller functions); if you like it rather you can rather write:
 
 ~~~python
 from tco import C
