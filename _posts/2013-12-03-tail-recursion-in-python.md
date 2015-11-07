@@ -21,8 +21,8 @@ fully usable tools for implementing tail-recursion optimization.
 As a personal convenience, I wrote a small module implementing such an optimization
 by two different ways. I would like to discuss here about my two main functions.
 
-The clean way: modifying the Y combinator
------------------------------------------
+### The clean way: modifying the Y combinator
+
 The Y combinator is well known; it allows to use lambda functions in a recursive
 manner, but it doesn't allow by itself to embed recursive calls in a loop. Lambda
 calculus alone can't do such a thing. A slight change in the Y combinator however
@@ -102,8 +102,8 @@ I didn't keep this new function in my module, and I see no circumstances where i
 could be used rather than the "official" one.
 
 
-Continuation passing style with exceptions
-------------------------------------------
+### Continuation passing style with exceptions
+
 Here is a more general function; it is able to handle all tail-recursive functions,
 including those returning other functions. Recursive calls are recognized from
 other return values by the use of exceptions. This solutions is slower than the
