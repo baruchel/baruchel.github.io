@@ -103,10 +103,12 @@ Now, how does it work? The important things are the parameters: `self`, `k1` and
 
 #### A second example: escaping from an infinite loop
 
-Look carefully at the second example below; you will notice a `while True` statement calling a classical python function; how could the program escape from the infinite loop by calling the `untrap` function? The trick is that the very pythonic `untrap` function takes as a parameter the outermost continuation of the `trap` function; thus the infinite loop is started, the `untrap` function is normally called (and added to one more level of the execution stack since it isn't an optimized function), and the `untrap` function calls (from the inside of the loop) a continuation which is _outside_ of the loop.
+Look carefully at the second example below; you will notice a `while True` statement calling a classical python function; how could the program escape from the infinite loop by calling the `untrap` function? The trick is that the very pythonic `untrap` function takes as a parameter the outermost continuation of the `trap` function; thus the infinite loop is started, the `untrap` function is normally called (and added to one more level of the execution stack since it isn't an optimized function), and the `untrap` function calls (from the inside of the loop) a continuation which is _outside_ of the loop. Here the call `trap()` will evaluate to 42.
 
 ~~~python
-escape = C(lambda f: lambda n: n)()
+from tco import C
+
+escape = C(lambda f: lambda n: n)() # identity function
 
 def untrap(k):
   k(42)
@@ -122,3 +124,28 @@ trap = C(trap)(escape)
 In Van Vogt's novel _The Wizard of Linn_, Clane owns a sphere which is itself the whole universe: Clane is _inside_ the universe but it can as well act upon the universe from _outide of it_. See also the lithograph by M.C. Escher called _Print Gallery_; the standing man is _inside_ the painting on the wall and at the same time _outside_ of it.
 
 ![Print gallery by M.C. Escher](https://upload.wikimedia.org/wikipedia/en/0/02/Print_Gallery_by_M._C._Escher.jpg)
+
+#### Nested systems of continuations
+
+The previous version of the tco module wouldn't allow to nest several distinct systems of functions passing their own continuation. The code of the last version was carefully redesigned for allowing it. See the code below:
+
+~~~python
+from tco import C
+
+escape = C(lambda f: lambda n: n)()
+
+def trap1(self, k1):
+  def code():
+    while True:
+      trap2(k1)
+  return code
+trap1 = C(trap1)(escape)
+
+def trap2(self):
+  def code(k):
+    k(42)
+  return code
+trap2 = C(trap2)()
+~~~
+
+Again, you can see an infinite loop, but the new thing is that the function called from the infinite loop in `trap1` isn't a classical python function as previously but _another_ function called `trap2` optimized by the module tco. One could wonder whether the system is clever enough to understand that the `k(42)` call must not be confused with the continuation of the innermost C function or not, but it actually is: the call to `trap1()` is (as expected) evaluated to 42.
