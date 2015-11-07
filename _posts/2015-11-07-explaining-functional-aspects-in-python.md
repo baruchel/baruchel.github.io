@@ -37,7 +37,7 @@ First, let's build some perfect binary tree:
 ~~~python
 from itertools import groupby
 from random import sample
-nbrlevels = 20                # number of levels in the tree
+nbrlevels = 16                # number of levels in the tree
 n = 2**nbrlevels - 1          # number of nodes
 t = sample(range(2*n), n)     # values of the nodes
 t.sort()
@@ -78,3 +78,23 @@ search = C(lambda self, k1, k2: lambda node, n:
                  else k2() # no child exists
             ))(exit_success, exit_failure)
 ~~~
+
+Of course you could object that nobody would write such a code; if you like it rather you can rather write:
+
+~~~python
+from tco import C
+
+def csearch(self, k1, k2):
+  def code(node, n): 
+    if n == node[0]: k1(node)
+    elif node[1]:
+      if n < node[2][0]: self(node[1],n)
+      else: self(node[2],n)
+    else: k2()
+  return code
+csearch = C(csearch)(exit_success, exit_failure)
+~~~
+
+which will work equally; notice that using the `return` statement is useless (you can use it if you want but you don't have to use it).
+
+You can now use the function with something like `search(tree,42)` in order to search for the value 42 in the tree; the `do_something` function doesn't do anything interesting here except printing a message, but the important thing is that this function will be directly executed outside of the recursion despite appearances.
