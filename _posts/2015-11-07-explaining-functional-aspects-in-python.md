@@ -5,7 +5,7 @@ date:   2015-11-07
 categories: python
 ---
 
-# Introduction
+### Introduction
 
 Many python programmers, who are not aware of really different programming languages sometimes wonder why some coders make such a noise about various functional features allegedly missing in the python language. I want to talk to them in this post and try to explain to them, by using the language they know and like, some of the programming techniques involved in these questions.
 
@@ -15,7 +15,7 @@ But sometimes I miss some of these features and this is why I care about them (a
 
 To that question, the answer is easy: _there is absolutely nothing that I can do with functional techniques that I can't already do with python._ But this is very certainly an ill-posed question. The great programmer Keneth Iverson always thought that the way you code helps you thinking what to code; if such a claim sounds too strange; if you rather think that you merely want to know what is the algorithm you need for such or such problem and then adapt it to Python, then you probably don't need to read further this post: the fact is that you will not discover here some hidden gem that could make your coding more productive.
 
-# Using the tco module
+### Using the tco module
 
 The [tco](https://github.com/baruchel/tco) module is a powerful module made of a couple of lines allowing mainly:
 
@@ -26,6 +26,6 @@ The [tco](https://github.com/baruchel/tco) module is a powerful module made of a
 
 Two ideas lie behind these features: repeatedly call functions without having the size of the execution stack increasing and possibly jump back from a place in the execution stack to a previous one _without passing through the intermediate calls and their own waiting `return` statements_.
 
-### A first example: a binary search tree
+#### A first example: a binary search tree
 
 
