@@ -38,24 +38,28 @@ The following code shows that nested calls are correctly handled; while trapped 
 @with_continuation
 def k_test1(k):
     def _inner(v):
+        print("Entering loop 1")
         while True: (with_CC >> k_test2)(k, v)
     return _inner
 
 @with_continuation
 def k_test2(k):
     def _inner(cont, v):
+        print("Entering loop 2")
         while True: (with_CC >> k_test3)(cont, v)
     return _inner
 
 @with_continuation
-def k_test2(k):
+def k_test3(k):
     def _inner(cont, v):
+        print("Entering loop 3")
         while True: (cont << k_identity)(v)
     return _inner
 
 @with_continuation
 def k_identity(k):
     def _inner(x):
+        print("Entering k_identity")
         return x
     return _inner
 
