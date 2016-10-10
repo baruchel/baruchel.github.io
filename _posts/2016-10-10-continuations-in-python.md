@@ -4,7 +4,7 @@ title:  "Continuations in Python"
 date:   2016-10-10
 categories: python
 ---
-In previous posts, I already wrote about continuations in Python. Below are some new ideas on the topic. First of all, I released yesterday a new version (v. 1.2.1) of the [tco](https://github.com/baruchel/tcl) module, with a decorator. Thinking again to it lead me to write a new module from scratch, by keeping a similar internal mechanism but behaving quite differently. My new module id [continuation](https://github.com/baruchel/continuation).
+In previous posts, I already wrote about continuations in Python. Below are some new ideas on the topic. First of all, I released yesterday a new version (v. 1.2.1) of the [tco](https://github.com/baruchel/tco) module, with a decorator. Thinking again to it lead me to write a new module from scratch, by keeping a similar internal mechanism but behaving quite differently. My new module id [continuation](https://github.com/baruchel/continuation).
 
 While the _tco_ module requires the coder to use a rather heavy syntax, I wanted to achieve a more mature project, easier to use. Here is a tail-recursive code for the factorial function:
 
