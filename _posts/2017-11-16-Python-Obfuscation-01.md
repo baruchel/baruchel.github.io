@@ -50,7 +50,7 @@ The same idea can however be tweaked in order to avoid any memory usage; if `G` 
 [ None for x in G if <expr> and None ]
 ~~~
 
-will not append any term to the current list; of course, if `<expr>` is nown to return something like `None`, the final part can be removed; if `<expr>` is known to return something like `True`, another simplification would be:
+will not append any term to the current list; of course, if `<expr>` is known to return something like `None`, the final part can be removed; if `<expr>` is known to return something like `True`, another simplification would be:
 
 ~~~python
 [ None for x in G if not <expr> ]
