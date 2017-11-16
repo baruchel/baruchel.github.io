@@ -74,7 +74,7 @@ Creating a new iterator implies defining a new class, which is achievable in an 
 type("MyClass", (object,), {})
 ~~~
 
-yielding a kind of empty class and methods can be added to it with:
+yielding a kind of empty class. New methods can be added to it with:
 
 ~~~python
 Evil = (
