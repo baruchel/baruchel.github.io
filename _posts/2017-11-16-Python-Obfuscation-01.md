@@ -122,9 +122,9 @@ which yields the expected `[True, True, True, True, True]`. Using a set rather t
 
 ~~~python
 (t(w[0]) and not w.__setitem__(0, f(w[0])))
+~~~
 
 which may be slightly faster.
-~~~
 
 The final version finally is:
 
