@@ -74,7 +74,7 @@ Creating a new iterator implies defining a new class, which is achievable in an 
 type("MyClass", (object,), {})
 ~~~
 
-yields a kind of empty class and methods can be added to it with:
+yielding a kind of empty class and methods can be added to it with:
 
 ~~~python
 Evil = (
@@ -140,7 +140,7 @@ loop = lambda f, t, i: (
        )(type("EvilIterator", (object,), {}), [i])
 ~~~
 
-tested with: `loop(lambda x: x-1, lambda x:x > 0, 5)`. Of course a list can be used instead of a set as long as a filter is used in order to control the size of the list:
+tested with: `loop(lambda x: x-1, lambda x:x > 0, 5)`. Of course a list can be used instead of a set as long as a filter helps controlling the size of the list:
 
 ~~~python
                or [ x for x in o() if not x ]
