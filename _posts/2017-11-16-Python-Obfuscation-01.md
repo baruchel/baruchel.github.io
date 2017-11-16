@@ -147,6 +147,8 @@ tested with: `loop(lambda x: x-1, lambda x:x > 0, 5)`. Of course a list can be u
                or w[0]
 ~~~
 
+but I like rather the version using a set because it does not contain a single `if` keyword also!
+
 Now we can try to find some factor of an integer number by using the brute force:
 
 ~~~python
