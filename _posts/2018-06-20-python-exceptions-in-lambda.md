@@ -40,7 +40,7 @@ Raising the `StopIteration` exception can be achieved either with a general solu
 next(iter())
 ~~~
 
-Catching the exception can be computing everything inside an iterator intended to run over a single value: once converted to a list, the sequence will either be empty or contain one returned value.
+Catching the exception can be achieved by computing everything inside an iterator intended to run over a single value: once converted to a list, the sequence will either be empty or contain one returned value.
 
 Here is a tail-recursion version of the factorial:
 
