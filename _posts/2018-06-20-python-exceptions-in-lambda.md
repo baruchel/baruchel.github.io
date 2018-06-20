@@ -50,7 +50,7 @@ list((lambda:(yield from (randrange(0,2) or next(iter(())) for _ in (None,))))()
 ~~~
 
 
-Here is a tail-recursion version of the factorial:
+Here is a tail-recursion version of the factorial using the `C` expression defined above:
 
 ~~~python
 myfac = C(lambda f: lambda n, acc: f(n-1, n*acc) if n else acc)
@@ -73,3 +73,5 @@ def outer(f):
 g = C(outer)
 print(g(1))
 ~~~
+
+The `C` expression should be strong enough to be used with any user-defined function as long as it doesn't use the callback function inside an iterator being wrapped in a `yield from` expression, which is not likely to happen.
