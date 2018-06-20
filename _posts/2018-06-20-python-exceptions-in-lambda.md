@@ -37,10 +37,18 @@ Raising the `StopIteration` exception can be achieved either with a general solu
 ~~~python
 (_ for _ in ()).throw(StopIteration)
 
-next(iter())
+next(iter(()))
 ~~~
 
-Catching the exception can be achieved by computing everything inside an iterator intended to run over a single value: once converted to a list, the sequence will either be empty or contain one returned value.
+Catching the exception can be achieved by computing everything inside an iterator intended to run over a single value: once converted to a list, the sequence will either be empty or contain one returned value. The following piece of code randomly returns `[]` or `[1]` (if an exception is raised or not):
+
+
+~~~python
+from random import randrange
+
+list((lambda:(yield from (randrange(0,2) or next(iter(())) for _ in (None,))))())
+~~~
+
 
 Here is a tail-recursion version of the factorial:
 
