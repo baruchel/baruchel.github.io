@@ -50,7 +50,7 @@ list((lambda:(yield from (randrange(0,2) or next(iter(())) for _ in (None,))))()
 ~~~
 
 
-Here is a tail-recursion version of the factorial using the `C` expression defined above:
+Here is a tail-recursive version of the factorial using the `C` expression defined above:
 
 ~~~python
 myfac = C(lambda f: lambda n, acc: f(n-1, n*acc) if n else acc)
